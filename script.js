@@ -2173,10 +2173,10 @@ loadProducts();
 /* =====================================================
    RECARGAR PRODUCTOS AUTOMÁTICAMENTE
 
-   Cada 30 segundos consulta Supabase.
+   Cada 30 minutos consulta Supabase.
 ===================================================== */
 
 setInterval(
   loadProducts,
-  30000
+  300000
 );
