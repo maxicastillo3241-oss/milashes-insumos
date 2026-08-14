@@ -9,18 +9,14 @@
    SUPABASE
 ===================================================== */
 
-const SUPABASE_URL =
-  "https://dnorgfrhhuclcgptgdqm.supabase.co";
+const SUPABASE_URL = "https://dnorgfrhhuclcgptgdqm.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
+const SUPABASE_KEY = "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 /* =====================================================
    ELEMENTOS
