@@ -238,71 +238,29 @@ a {
    ===================================================== */
 
 .hero {
-  min-height: 470px;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255, 250, 248, .98),
-      rgba(255, 250, 248, .82),
-      rgba(255, 250, 248, .15)
-    ),
-    url("https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=1800&q=80")
-    center/cover;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 1;
+
+  background-image: url("imagenes/banner.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
   display: flex;
   align-items: center;
-  padding: 60px 8%;
 }
 
 .hero-content {
-  max-width: 560px;
+  display: none;
 }
+@media (max-width: 700px) {
 
-.hero-label,
-.section-label {
-  color: var(--pink-dark);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
+  .hero {
+    aspect-ratio: 2 / 1;
+  }
+
 }
-
-.hero h1 {
-  font-family: "Playfair Display", serif;
-  font-size: clamp(48px, 6vw, 78px);
-  line-height: .98;
-  margin: 18px 0;
-  font-weight: 500;
-}
-
-.hero h1 strong {
-  display: block;
-  color: var(--pink-dark);
-  font-weight: 600;
-}
-
-.hero p {
-  color: #5f585b;
-  line-height: 1.8;
-  max-width: 460px;
-  margin-bottom: 30px;
-  font-size: 13px;
-}
-
-.hero-button {
-  display: inline-block;
-  background: var(--dark);
-  color: white;
-  padding: 16px 32px;
-  font-size: 10px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  transition: .25s;
-}
-
-.hero-button:hover {
-  background: var(--pink-dark);
-  transform: translateY(-2px);
-}
-
 
 /* =====================================================
    CATEGORIES

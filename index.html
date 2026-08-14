@@ -42,6 +42,10 @@
       💳 Consultá nuestros medios de pago
     </div>
 
+    <div>
+      📲 Atención por WhatsApp
+    </div>
+
   </div>
 
 
@@ -55,12 +59,24 @@
       class="mobile-menu"
       id="mobileMenu"
       type="button"
+      aria-label="Abrir menú"
     >
       ☰
     </button>
 
 
+    <!-- LOGO
+         MÁS ADELANTE REEMPLAZAMOS EL TEXTO POR TU IMAGEN
+    -->
+
     <a href="#" class="logo">
+
+      <!--
+      <img
+        src="PEGAR-AQUI-LINK-DEL-LOGO"
+        alt="MILASHES INSUMOS"
+      >
+      -->
 
       <span>
         MILASHES
@@ -72,6 +88,8 @@
 
     </a>
 
+
+    <!-- BUSCADOR -->
 
     <div class="search">
 
@@ -85,12 +103,15 @@
       <button
         id="searchButton"
         type="button"
+        aria-label="Buscar"
       >
         🔍
       </button>
 
     </div>
 
+
+    <!-- ACCIONES -->
 
     <div class="header-actions">
 
@@ -107,6 +128,7 @@
         class="cart-button"
         id="cartButton"
         type="button"
+        aria-label="Abrir carrito"
       >
 
         🛒
@@ -176,6 +198,10 @@
       KITS
     </a>
 
+    <a href="#productos">
+      OFERTAS
+    </a>
+
     <a href="#contacto">
       CONTACTO
     </a>
@@ -184,44 +210,10 @@
 
 
   <!-- =====================================================
-       HERO
+       HERO / BANNER PRINCIPAL
   ====================================================== -->
 
   <section class="hero">
-
-    <div class="hero-content">
-
-      <span class="hero-label">
-        MILASHES · INSUMOS PROFESIONALES
-      </span>
-
-
-      <h1>
-
-        Todo para tus
-
-        <strong>
-          pestañas
-        </strong>
-
-      </h1>
-
-
-      <p>
-        Todo lo que necesitás para crear miradas increíbles.
-        Insumos profesionales para lashistas, con calidad y variedad.
-      </p>
-
-
-      <a
-        href="#productos"
-        class="hero-button"
-      >
-        VER PRODUCTOS
-      </a>
-
-    </div>
-
   </section>
 
 
@@ -238,7 +230,7 @@
       </span>
 
       <h2>
-        Categorías
+        Comprar por categoría
       </h2>
 
     </div>
@@ -251,8 +243,15 @@
         data-category="Pestañas"
         type="button"
       >
-        <div>👁️</div>
-        <span>Pestañas</span>
+
+        <div>
+          👁️
+        </div>
+
+        <span>
+          Pestañas
+        </span>
+
       </button>
 
 
@@ -261,8 +260,15 @@
         data-category="Adhesivos"
         type="button"
       >
-        <div>💧</div>
-        <span>Adhesivos</span>
+
+        <div>
+          💧
+        </div>
+
+        <span>
+          Adhesivos
+        </span>
+
       </button>
 
 
@@ -271,8 +277,15 @@
         data-category="Pinzas"
         type="button"
       >
-        <div>✂️</div>
-        <span>Pinzas</span>
+
+        <div>
+          ✂️
+        </div>
+
+        <span>
+          Pinzas
+        </span>
+
       </button>
 
 
@@ -281,8 +294,15 @@
         data-category="Accesorios"
         type="button"
       >
-        <div>✨</div>
-        <span>Accesorios</span>
+
+        <div>
+          ✨
+        </div>
+
+        <span>
+          Accesorios
+        </span>
+
       </button>
 
 
@@ -291,11 +311,58 @@
         data-category="Kits"
         type="button"
       >
-        <div>🎁</div>
-        <span>Kits</span>
+
+        <div>
+          🎁
+        </div>
+
+        <span>
+          Kits
+        </span>
+
       </button>
 
     </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       BANNER SECUNDARIO
+  ====================================================== -->
+
+  <section class="banner">
+
+    <!--
+    MÁS ADELANTE PODEMOS PONER UNA IMAGEN REAL:
+
+    <img
+      src="PEGAR-AQUI-LINK-DEL-BANNER-2"
+      alt="MILASHES"
+    >
+    -->
+
+
+    <div>
+
+      <span>
+        PARA PROFESIONALES
+      </span>
+
+      <h2>
+        Equipá tu espacio de trabajo
+      </h2>
+
+      <p>
+        Encontrá todo lo necesario para tus servicios de pestañas.
+      </p>
+
+    </div>
+
+
+    <a href="#productos">
+      VER CATÁLOGO
+    </a>
 
   </section>
 
@@ -318,7 +385,7 @@
         </span>
 
         <h2>
-          Productos
+          Productos destacados
         </h2>
 
       </div>
@@ -350,7 +417,9 @@
     <div class="shop-layout">
 
 
-      <!-- FILTROS -->
+      <!-- =================================================
+           FILTROS
+      ================================================== -->
 
       <aside
         class="filters"
@@ -495,7 +564,9 @@
       </aside>
 
 
-      <!-- GRILLA -->
+      <!-- =================================================
+           GRILLA DE PRODUCTOS
+      ================================================== -->
 
       <section class="products-container">
 
@@ -541,30 +612,30 @@
 
 
   <!-- =====================================================
-       BANNER
+       PROMOCIÓN
   ====================================================== -->
 
-  <section class="banner">
+  <section class="banner promotion-banner">
 
     <div>
 
       <span>
-        PARA PROFESIONALES
+        MILASHES INSUMOS
       </span>
 
       <h2>
-        Equipá tu espacio de trabajo
+        Todo lo que necesitás para trabajar
       </h2>
 
       <p>
-        Encontrá todo lo necesario para tus servicios de pestañas.
+        Calidad, variedad y productos pensados para profesionales.
       </p>
 
     </div>
 
 
-    <a href="#productos">
-      VER CATÁLOGO
+    <a href="#contacto">
+      CONSULTANOS
     </a>
 
   </section>
@@ -595,6 +666,8 @@
     <div class="contact-grid">
 
 
+      <!-- WHATSAPP -->
+
       <div class="contact-card">
 
         <div>
@@ -619,6 +692,8 @@
       </div>
 
 
+      <!-- INSTAGRAM -->
+
       <div class="contact-card">
 
         <div>
@@ -634,15 +709,17 @@
         </p>
 
         <a
-  href="https://www.instagram.com/mi_lashess_/"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Ver Instagram
-</a>
+          href="https://www.instagram.com/mi_lashess_/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver Instagram
+        </a>
 
       </div>
 
+
+      <!-- ENVÍOS -->
 
       <div class="contact-card">
 
@@ -737,6 +814,7 @@
       <button
         id="closeCart"
         type="button"
+        aria-label="Cerrar carrito"
       >
         ×
       </button>
@@ -834,9 +912,6 @@
 
   <!-- =====================================================
        SUPABASE
-       
-       IMPORTANTE:
-       SUPABASE SE CARGA ANTES DE script.js
   ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -844,8 +919,6 @@
 
   <!-- =====================================================
        SCRIPT DE LA TIENDA
-       
-       SE CARGA UNA SOLA VEZ
   ====================================================== -->
 
   <script src="script.js"></script>
