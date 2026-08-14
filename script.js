@@ -106,9 +106,12 @@ let cartData =
    CAMBIÁ EL NÚMERO POR EL DE MILASHES
 ===================================================== */
 
-const WHATSAPP_NUMBER =
-  "5491156348200";
+const WHATSAPP_NUMBER = "5491156348200";
 
+if (whatsappContact) {
+  whatsappContact.href = `https://wa.me/${WHATSAPP_NUMBER}`;
+  whatsappContact.target = "_blank";
+}
 
 /* =====================================================
    FORMATO DE PRECIO
