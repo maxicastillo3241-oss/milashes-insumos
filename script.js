@@ -1,11 +1,13 @@
 /* =====================================================
    MILASHES INSUMOS
-   SCRIPT COMPLETO + SUPABASE
-   ===================================================== */
+   TIENDA
+   SUPABASE + CARRITO + FILTROS
+===================================================== */
+
 
 /* =====================================================
-   CONFIGURACIÓN SUPABASE
-   ===================================================== */
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
   "https://dnorgfrhhuclcgptgdqm.supabase.co";
@@ -13,127 +15,16 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
 
-const WHATSAPP_NUMBER = "5491100000000";
-
-const INSTAGRAM_URL = "https://instagram.com/";
-
-
-/* =====================================================
-   CLIENTE SUPABASE
-   ===================================================== */
-
-const supabase = window.supabase;
-
-
-/* =====================================================
-   PRODUCTOS
-   ===================================================== */
-
-let products = [];
-
-
-/* =====================================================
-   PRODUCTOS DE RESPALDO
-   Si Supabase falla, estos aparecen igualmente.
-   ===================================================== */
-
-const fallbackProducts = [
-
-  {
-    id: 1,
-    name: "Pestañas Clásicas 0.15 C",
-    category: "Pestañas",
-    price: 8500,
-    transfer_price: 7650,
-    description: "Bandeja de pestañas individuales para técnica clásica.",
-    image: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  },
-
-  {
-    id: 2,
-    name: "Pestañas Clásicas 0.20 C",
-    category: "Pestañas",
-    price: 8900,
-    transfer_price: 8010,
-    description: "Pestañas profesionales de excelente definición y curvatura.",
-    image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  },
-
-  {
-    id: 3,
-    name: "Pestañas Volumen 0.07 D",
-    category: "Pestañas",
-    price: 10500,
-    transfer_price: 9450,
-    description: "Fibra liviana para técnicas de volumen y mega volumen.",
-    image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  },
-
-  {
-    id: 4,
-    name: "Pestañas Volumen 0.05 CC",
-    category: "Pestañas",
-    price: 11200,
-    transfer_price: 10080,
-    description: "Curvatura CC ideal para diferentes estilos de volumen.",
-    image: "https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  },
-
-  {
-    id: 5,
-    name: "Pestañas YY 0.07",
-    category: "Pestañas",
-    price: 9800,
-    transfer_price: 8820,
-    description: "Pestañas YY para lograr mayor volumen de manera práctica.",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  },
-
-  {
-    id: 6,
-    name: "Pestañas W 0.07",
-    category: "Pestañas",
-    price: 10200,
-    transfer_price: 9180,
-    description: "Pestañas W para volumen y efecto de mayor densidad.",
-    image: "https://images.unsplash.com/photo-1581182800629-7d90925ad072?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  },
-
-  {
-    id: 7,
-    name: "Adhesivo Profesional 5 ml",
-    category: "Adhesivos",
-    price: 14500,
-    transfer_price: 13050,
-    description: "Adhesivo profesional de secado rápido para extensiones.",
-    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=700&q=80",
-    discount: 10
-  }
-
-];
-
-
-/* =====================================================
-   ESTADO
-   ===================================================== */
-
-let cartItemsState =
-  JSON.parse(localStorage.getItem("milashesCart")) || [];
-
-let activeCategory = "Todos";
-let activePrice = "all";
-let searchTerm = "";
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 /* =====================================================
    ELEMENTOS
-   ===================================================== */
+===================================================== */
 
 const productGrid =
   document.getElementById("productGrid");
@@ -150,10 +41,16 @@ const searchInput =
 const searchButton =
   document.getElementById("searchButton");
 
+const sortProducts =
+  document.getElementById("sortProducts");
+
+const clearFilters =
+  document.getElementById("clearFilters");
+
 const cartButton =
   document.getElementById("cartButton");
 
-const cartElement =
+const cart =
   document.getElementById("cart");
 
 const cartOverlay =
@@ -161,6 +58,9 @@ const cartOverlay =
 
 const closeCart =
   document.getElementById("closeCart");
+
+const continueShopping =
+  document.getElementById("continueShopping");
 
 const cartItems =
   document.getElementById("cartItems");
@@ -174,17 +74,14 @@ const cartTotal =
 const checkoutButton =
   document.getElementById("checkoutButton");
 
-const continueShopping =
-  document.getElementById("continueShopping");
-
 const productModal =
   document.getElementById("productModal");
 
-const closeModal =
-  document.getElementById("closeModal");
-
 const modalContent =
   document.getElementById("modalContent");
+
+const closeModal =
+  document.getElementById("closeModal");
 
 const mobileMenu =
   document.getElementById("mobileMenu");
@@ -192,10 +89,34 @@ const mobileMenu =
 const nav =
   document.getElementById("nav");
 
+const whatsappContact =
+  document.getElementById("whatsappContact");
+
 
 /* =====================================================
-   PRECIO
-   ===================================================== */
+   ESTADO
+===================================================== */
+
+let products = [];
+
+let cartData =
+  JSON.parse(
+    localStorage.getItem("milashes_cart") || "[]"
+  );
+
+
+/* =====================================================
+   CONFIGURACIÓN WHATSAPP
+   CAMBIÁ EL NÚMERO POR EL DE MILASHES
+===================================================== */
+
+const WHATSAPP_NUMBER =
+  "5491100000000";
+
+
+/* =====================================================
+   FORMATO DE PRECIO
+===================================================== */
 
 function formatPrice(price) {
 
@@ -209,230 +130,185 @@ function formatPrice(price) {
 
 
 /* =====================================================
-   CARGAR SUPABASE
-   ===================================================== */
+   ESCAPAR HTML
+===================================================== */
 
-async function loadProducts() {
+function escapeHTML(value) {
 
-  console.log("Conectando con Supabase...");
-
-  try {
-
-    if (!supabase) {
-
-      throw new Error(
-        "La librería de Supabase no está cargada."
-      );
-
-    }
-
-
-    const response =
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/products?select=*`,
-        {
-          method: "GET",
-
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization":
-              `Bearer ${SUPABASE_KEY}`,
-            "Content-Type":
-              "application/json"
-          }
-        }
-      );
-
-
-    if (!response.ok) {
-
-      const errorText =
-        await response.text();
-
-      throw new Error(
-        `Supabase respondió ${response.status}: ${errorText}`
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    console.log(
-      "Productos recibidos desde Supabase:",
-      data
-    );
-
-
-    if (!Array.isArray(data)) {
-
-      throw new Error(
-        "Supabase no devolvió una lista de productos."
-      );
-
-    }
-
-
-    products =
-      data.map(product => ({
-
-        id: product.id,
-
-        name:
-          product.name || "Producto sin nombre",
-
-        category:
-          product.category || "Sin categoría",
-
-        price:
-          Number(product.price) || 0,
-
-        transfer_price:
-          Number(product.transfer_price) ||
-          Number(product.price) || 0,
-
-        description:
-          product.description || "",
-
-        image:
-          product.image ||
-          "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=80",
-
-        discount:
-          Number(product.discount) || 0
-
-      }));
-
-
-    console.log(
-      `Se cargaron ${products.length} productos.`
-    );
-
-
-    /*
-     Si Supabase está vacío, usamos ejemplos.
-    */
-
-    if (products.length === 0) {
-
-      console.warn(
-        "La tabla products está vacía. Se utilizarán productos de ejemplo."
-      );
-
-      products = fallbackProducts;
-
-    }
-
-
-    renderProducts();
-    renderCart();
-
-  }
-
-
-  catch (error) {
-
-    console.error(
-      "ERROR SUPABASE:",
-      error
-    );
-
-
-    /*
-     Si hay error, mostramos productos
-     de respaldo.
-    */
-
-    products = fallbackProducts;
-
-
-    renderProducts();
-    renderCart();
-
-
-    console.warn(
-      "Se utilizaron productos de respaldo."
-    );
-
-  }
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
 
 /* =====================================================
-   MOSTRAR PRODUCTOS
-   ===================================================== */
+   IMAGEN POR DEFECTO
+===================================================== */
 
-function renderProducts() {
+function getProductImage(product) {
 
-  if (!productGrid) return;
+  return product.image ||
+    "https://via.placeholder.com/600x600?text=MILASHES";
 
+
+}
+
+
+/* =====================================================
+   CARGAR PRODUCTOS DESDE SUPABASE
+===================================================== */
+
+async function loadProducts() {
+
+  productGrid.innerHTML = `
+    <div style="
+      grid-column:1/-1;
+      text-align:center;
+      padding:60px 20px;
+      color:#777;
+      font-size:12px;
+    ">
+      Cargando productos...
+    </div>
+  `;
+
+  noResults.style.display = "none";
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .select("*")
+      .eq("active", true)
+      .order("id", {
+        ascending: false
+      });
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando productos:",
+      error
+    );
+
+    productGrid.innerHTML = `
+      <div style="
+        grid-column:1/-1;
+        text-align:center;
+        padding:60px 20px;
+        color:#c45b68;
+        font-size:12px;
+      ">
+        No se pudieron cargar los productos.
+        <br><br>
+        ${escapeHTML(error.message)}
+      </div>
+    `;
+
+    resultsCount.textContent =
+      "0 productos";
+
+    return;
+
+  }
+
+
+  products = data || [];
+
+
+  console.log(
+    "Productos cargados desde Supabase:",
+    products
+  );
+
+
+  applyFilters();
+
+}
+
+
+/* =====================================================
+   FILTROS
+===================================================== */
+
+function getSelectedCategory() {
+
+  const selected =
+    document.querySelector(
+      'input[name="category"]:checked'
+    );
+
+  return selected
+    ? selected.value
+    : "Todos";
+
+}
+
+
+function getSelectedPrice() {
+
+  const selected =
+    document.querySelector(
+      'input[name="price"]:checked'
+    );
+
+  return selected
+    ? selected.value
+    : "all";
+
+}
+
+
+/* =====================================================
+   APLICAR FILTROS
+===================================================== */
+
+function applyFilters() {
 
   let filtered =
     [...products];
 
 
-  /* BUSCADOR */
+  /* -------------------------
+     CATEGORÍA
+  ------------------------- */
+
+  const category =
+    getSelectedCategory();
+
 
   if (
-    searchTerm.trim() !== ""
+    category &&
+    category !== "Todos"
   ) {
-
-    const term =
-      searchTerm
-        .toLowerCase()
-        .trim();
-
 
     filtered =
       filtered.filter(product =>
-
-        product.name
-          .toLowerCase()
-          .includes(term)
-
-        ||
-
-        product.category
-          .toLowerCase()
-          .includes(term)
-
-        ||
-
-        product.description
-          .toLowerCase()
-          .includes(term)
-
+        String(product.category || "")
+          .toLowerCase() ===
+        category.toLowerCase()
       );
 
   }
 
 
-  /* CATEGORÍA */
+  /* -------------------------
+     PRECIO
+  ------------------------- */
 
-  if (
-    activeCategory !== "Todos"
-  ) {
-
-    filtered =
-      filtered.filter(product =>
-
-        product.category ===
-        activeCategory
-
-      );
-
-  }
+  const priceFilter =
+    getSelectedPrice();
 
 
-  /* PRECIO */
-
-  if (
-    activePrice ===
-    "under10000"
-  ) {
+  if (priceFilter === "under10000") {
 
     filtered =
       filtered.filter(product =>
@@ -442,27 +318,18 @@ function renderProducts() {
   }
 
 
-  if (
-    activePrice ===
-    "10000-20000"
-  ) {
+  if (priceFilter === "10000-20000") {
 
     filtered =
       filtered.filter(product =>
-
         Number(product.price) >= 10000 &&
-
         Number(product.price) <= 20000
-
       );
 
   }
 
 
-  if (
-    activePrice ===
-    "over20000"
-  ) {
+  if (priceFilter === "over20000") {
 
     filtered =
       filtered.filter(product =>
@@ -472,115 +339,151 @@ function renderProducts() {
   }
 
 
-  /* ORDEN */
+  /* -------------------------
+     BÚSQUEDA
+  ------------------------- */
 
-  const sortElement =
-    document.getElementById(
-      "sortProducts"
-    );
-
-
-  if (sortElement) {
-
-    const sort =
-      sortElement.value;
+  const search =
+    searchInput
+      ? searchInput.value
+          .trim()
+          .toLowerCase()
+      : "";
 
 
-    if (
-      sort === "price-low"
-    ) {
+  if (search) {
 
-      filtered.sort(
-        (a, b) =>
-          Number(a.price) -
-          Number(b.price)
-      );
+    filtered =
+      filtered.filter(product => {
 
-    }
+        const name =
+          String(product.name || "")
+            .toLowerCase();
 
+        const categoryText =
+          String(product.category || "")
+            .toLowerCase();
 
-    if (
-      sort === "price-high"
-    ) {
+        const description =
+          String(product.description || "")
+            .toLowerCase();
 
-      filtered.sort(
-        (a, b) =>
-          Number(b.price) -
-          Number(a.price)
-      );
+        return (
+          name.includes(search) ||
+          categoryText.includes(search) ||
+          description.includes(search)
+        );
 
-    }
-
-
-    if (
-      sort === "name"
-    ) {
-
-      filtered.sort(
-        (a, b) =>
-          a.name.localeCompare(
-            b.name
-          )
-      );
-
-    }
+      });
 
   }
 
 
-  /* LIMPIAR */
+  /* -------------------------
+     ORDEN
+  ------------------------- */
+
+  const sort =
+    sortProducts
+      ? sortProducts.value
+      : "default";
+
+
+  if (sort === "price-low") {
+
+    filtered.sort(
+      (a, b) =>
+        Number(a.price || 0) -
+        Number(b.price || 0)
+    );
+
+  }
+
+
+  if (sort === "price-high") {
+
+    filtered.sort(
+      (a, b) =>
+        Number(b.price || 0) -
+        Number(a.price || 0)
+    );
+
+  }
+
+
+  if (sort === "name") {
+
+    filtered.sort(
+      (a, b) =>
+        String(a.name || "")
+          .localeCompare(
+            String(b.name || ""),
+            "es"
+          )
+    );
+
+  }
+
+
+  renderProducts(filtered);
+
+}
+
+
+/* =====================================================
+   MOSTRAR PRODUCTOS
+===================================================== */
+
+function renderProducts(list) {
 
   productGrid.innerHTML = "";
 
 
-  /* RESULTADOS */
-
-  if (resultsCount) {
-
-    resultsCount.textContent =
-      `${filtered.length} producto${filtered.length !== 1 ? "s" : ""}`;
-
-  }
+  resultsCount.textContent =
+    `${list.length} ${
+      list.length === 1
+        ? "producto"
+        : "productos"
+    }`;
 
 
-  /* SIN RESULTADOS */
+  if (list.length === 0) {
 
-  if (
-    filtered.length === 0
-  ) {
-
-    if (noResults) {
-
-      noResults.style.display =
-        "block";
-
-    }
+    noResults.style.display =
+      "block";
 
     return;
 
   }
 
 
-  if (noResults) {
-
-    noResults.style.display =
-      "none";
-
-  }
+  noResults.style.display =
+    "none";
 
 
-  /* PRODUCTOS */
-
-  filtered.forEach(product => {
+  list.forEach(product => {
 
     const card =
-      document.createElement(
-        "article"
-      );
-
+      document.createElement("article");
 
     card.className =
       "product-card";
+
+
+    const image =
+      getProductImage(product);
+
+
+    const price =
+      Number(product.price) || 0;
+
+
+    const transferPrice =
+      Number(product.transfer_price) || 0;
+
+
+    const discount =
+      Number(product.discount) || 0;
 
 
     card.innerHTML = `
@@ -588,17 +491,16 @@ function renderProducts() {
       <div class="product-image">
 
         <img
-          src="${product.image}"
-          alt="${product.name}"
+          src="${escapeHTML(image)}"
+          alt="${escapeHTML(product.name || "Producto")}"
           loading="lazy"
-          onerror="this.src='https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=80'"
         >
 
         ${
-          product.discount > 0
+          discount > 0
             ? `
               <span class="discount">
-                -${product.discount}%
+                -${discount}%
               </span>
             `
             : ""
@@ -609,35 +511,45 @@ function renderProducts() {
 
       <div class="product-info">
 
-        <span class="product-category">
-          ${product.category}
-        </span>
+        <div class="product-category">
+          ${escapeHTML(
+            product.category ||
+            "Sin categoría"
+          )}
+        </div>
 
 
-        <h3 class="product-name">
-          ${product.name}
-        </h3>
+        <div class="product-name">
+          ${escapeHTML(
+            product.name ||
+            "Producto sin nombre"
+          )}
+        </div>
 
 
-        <p class="product-description">
-          ${product.description}
-        </p>
+        <div class="product-description">
+          ${escapeHTML(
+            product.description ||
+            ""
+          )}
+        </div>
 
 
         <div class="price">
-          ${formatPrice(product.price)}
+          ${formatPrice(price)}
         </div>
 
 
-        <div class="transfer-price">
-
-          ${formatPrice(
-            product.transfer_price
-          )}
-
-          pagando por transferencia
-
-        </div>
+        ${
+          transferPrice > 0
+            ? `
+              <div class="transfer-price">
+                Transferencia:
+                ${formatPrice(transferPrice)}
+              </div>
+            `
+            : ""
+        }
 
 
         <button
@@ -648,12 +560,12 @@ function renderProducts() {
         </button>
 
 
-        <span
+        <div
           class="view-product"
           data-id="${product.id}"
         >
           Ver producto
-        </span>
+        </div>
 
       </div>
 
@@ -665,21 +577,22 @@ function renderProducts() {
   });
 
 
-  /* BOTONES CARRITO */
+  /* -------------------------
+     BOTONES CARRITO
+  ------------------------- */
 
-  document
+  productGrid
     .querySelectorAll(".add-cart")
     .forEach(button => {
 
       button.addEventListener(
         "click",
-        () => {
+        function() {
 
-          addToCart(
-            Number(
-              button.dataset.id
-            )
-          );
+          const id =
+            this.dataset.id;
+
+          addToCart(id);
 
         }
       );
@@ -687,21 +600,22 @@ function renderProducts() {
     });
 
 
-  /* VER PRODUCTO */
+  /* -------------------------
+     VER PRODUCTO
+  ------------------------- */
 
-  document
+  productGrid
     .querySelectorAll(".view-product")
     .forEach(button => {
 
       button.addEventListener(
         "click",
-        () => {
+        function() {
 
-          openProduct(
-            Number(
-              button.dataset.id
-            )
-          );
+          const id =
+            this.dataset.id;
+
+          openProductModal(id);
 
         }
       );
@@ -712,40 +626,282 @@ function renderProducts() {
 
 
 /* =====================================================
-   CARRITO
-   ===================================================== */
+   CATEGORÍAS
+===================================================== */
 
-function addToCart(productId) {
+document
+  .querySelectorAll(
+    ".category-card"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        const category =
+          this.dataset.category;
+
+
+        const radio =
+          document.querySelector(
+            `input[name="category"][value="${category}"]`
+          );
+
+
+        if (radio) {
+
+          radio.checked =
+            true;
+
+        }
+
+
+        applyFilters();
+
+
+        const productsSection =
+          document.getElementById(
+            "productos"
+          );
+
+
+        if (productsSection) {
+
+          productsSection.scrollIntoView({
+            behavior: "smooth"
+          });
+
+        }
+
+      }
+    );
+
+  });
+
+
+/* =====================================================
+   NAV CATEGORÍAS
+===================================================== */
+
+document
+  .querySelectorAll(
+    ".nav a[data-category]"
+  )
+  .forEach(link => {
+
+    link.addEventListener(
+      "click",
+      function(event) {
+
+        const category =
+          this.dataset.category;
+
+
+        if (category === "Todos") {
+
+          event.preventDefault();
+
+        }
+
+
+        const radio =
+          document.querySelector(
+            `input[name="category"][value="${category}"]`
+          );
+
+
+        if (radio) {
+
+          radio.checked =
+            true;
+
+        }
+
+
+        applyFilters();
+
+      }
+    );
+
+  });
+
+
+/* =====================================================
+   RADIO FILTROS
+===================================================== */
+
+document
+  .querySelectorAll(
+    'input[name="category"], input[name="price"]'
+  )
+  .forEach(input => {
+
+    input.addEventListener(
+      "change",
+      applyFilters
+    );
+
+  });
+
+
+/* =====================================================
+   LIMPIAR FILTROS
+===================================================== */
+
+if (clearFilters) {
+
+  clearFilters.addEventListener(
+    "click",
+    function() {
+
+      const allCategory =
+        document.querySelector(
+          'input[name="category"][value="Todos"]'
+        );
+
+      const allPrice =
+        document.querySelector(
+          'input[name="price"][value="all"]'
+        );
+
+
+      if (allCategory) {
+
+        allCategory.checked =
+          true;
+
+      }
+
+
+      if (allPrice) {
+
+        allPrice.checked =
+          true;
+
+      }
+
+
+      if (searchInput) {
+
+        searchInput.value =
+          "";
+
+      }
+
+
+      if (sortProducts) {
+
+        sortProducts.value =
+          "default";
+
+      }
+
+
+      applyFilters();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BUSCADOR
+===================================================== */
+
+if (searchInput) {
+
+  searchInput.addEventListener(
+    "input",
+    applyFilters
+  );
+
+}
+
+
+if (searchButton) {
+
+  searchButton.addEventListener(
+    "click",
+    applyFilters
+  );
+
+}
+
+
+/* =====================================================
+   ORDEN
+===================================================== */
+
+if (sortProducts) {
+
+  sortProducts.addEventListener(
+    "change",
+    applyFilters
+  );
+
+}
+
+
+/* =====================================================
+   CARRITO
+===================================================== */
+
+function saveCart() {
+
+  localStorage.setItem(
+    "milashes_cart",
+    JSON.stringify(cartData)
+  );
+
+}
+
+
+function addToCart(id) {
 
   const product =
     products.find(
-      p => Number(p.id) ===
-      Number(productId)
+      item =>
+        String(item.id) ===
+        String(id)
     );
 
 
-  if (!product) return;
+  if (!product) {
+
+    alert(
+      "No se encontró el producto."
+    );
+
+    return;
+
+  }
 
 
   const existing =
-    cartItemsState.find(
+    cartData.find(
       item =>
-        Number(item.id) ===
-        Number(productId)
+        String(item.id) ===
+        String(id)
     );
 
 
   if (existing) {
 
-    existing.quantity++;
+    existing.quantity += 1;
 
-  }
+  } else {
 
-  else {
-
-    cartItemsState.push({
+    cartData.push({
 
       id: product.id,
+
+      name: product.name,
+
+      price: Number(product.price) || 0,
+
+      image: product.image || "",
 
       quantity: 1
 
@@ -756,40 +912,34 @@ function addToCart(productId) {
 
   saveCart();
 
-  renderCart();
+  updateCart();
+
 
   openCart();
 
-}
-
-
-function saveCart() {
-
-  localStorage.setItem(
-    "milashesCart",
-    JSON.stringify(
-      cartItemsState
-    )
-  );
 
 }
 
 
 /* =====================================================
-   MOSTRAR CARRITO
-   ===================================================== */
+   ACTUALIZAR CARRITO
+===================================================== */
 
-function renderCart() {
+function updateCart() {
 
-  if (!cartItems) return;
+  const totalItems =
+    cartData.reduce(
+      (total, item) =>
+        total + Number(item.quantity || 0),
+      0
+    );
 
 
-  cartItems.innerHTML = "";
+  cartCount.textContent =
+    totalItems;
 
 
-  if (
-    cartItemsState.length === 0
-  ) {
+  if (cartData.length === 0) {
 
     cartItems.innerHTML = `
 
@@ -809,50 +959,40 @@ function renderCart() {
 
     `;
 
-
-    cartCount.textContent = "0";
-
     cartTotal.textContent =
-      formatPrice(0);
+      "$0";
 
     return;
 
   }
 
 
-  let total = 0;
-  let quantityTotal = 0;
+  cartItems.innerHTML =
+    "";
 
 
-  cartItemsState.forEach(item => {
-
-    const product =
-      products.find(
-        p =>
-          Number(p.id) ===
-          Number(item.id)
-      );
+  let total =
+    0;
 
 
-    if (!product) return;
+  cartData.forEach(item => {
 
+    const quantity =
+      Number(item.quantity) || 1;
+
+    const price =
+      Number(item.price) || 0;
 
     const subtotal =
-      Number(product.price) *
-      Number(item.quantity);
+      price * quantity;
 
 
-    total += subtotal;
-
-    quantityTotal +=
-      Number(item.quantity);
+    total +=
+      subtotal;
 
 
     const element =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     element.className =
       "cart-item";
@@ -861,41 +1001,47 @@ function renderCart() {
     element.innerHTML = `
 
       <img
-        src="${product.image}"
-        alt="${product.name}"
+        src="${escapeHTML(
+          item.image ||
+          "https://via.placeholder.com/150?text=Producto"
+        )}"
+        alt="${escapeHTML(item.name || "")}"
       >
 
 
       <div class="cart-item-info">
 
         <h4>
-          ${product.name}
+          ${escapeHTML(
+            item.name ||
+            "Producto"
+          )}
         </h4>
 
 
         <div class="cart-item-price">
-          ${formatPrice(product.price)}
+          ${formatPrice(price)}
         </div>
 
 
         <div class="quantity">
 
           <button
-            data-action="minus"
-            data-id="${product.id}"
+            class="decrease"
+            data-id="${item.id}"
           >
             −
           </button>
 
 
           <span>
-            ${item.quantity}
+            ${quantity}
           </span>
 
 
           <button
-            data-action="plus"
-            data-id="${product.id}"
+            class="increase"
+            data-id="${item.id}"
           >
             +
           </button>
@@ -903,8 +1049,7 @@ function renderCart() {
 
           <button
             class="remove-item"
-            data-action="remove"
-            data-id="${product.id}"
+            data-id="${item.id}"
           >
             Eliminar
           </button>
@@ -916,39 +1061,75 @@ function renderCart() {
     `;
 
 
-    cartItems.appendChild(
-      element
-    );
+    cartItems.appendChild(element);
 
   });
-
-
-  cartCount.textContent =
-    quantityTotal;
 
 
   cartTotal.textContent =
     formatPrice(total);
 
 
-  document
-    .querySelectorAll(
-      ".quantity button"
-    )
+  /* -------------------------
+     CANTIDAD -
+  ------------------------- */
+
+  cartItems
+    .querySelectorAll(".decrease")
     .forEach(button => {
 
       button.addEventListener(
         "click",
-        () => {
+        function() {
 
           changeQuantity(
+            this.dataset.id,
+            -1
+          );
 
-            Number(
-              button.dataset.id
-            ),
+        }
+      );
 
-            button.dataset.action
+    });
 
+
+  /* -------------------------
+     CANTIDAD +
+  ------------------------- */
+
+  cartItems
+    .querySelectorAll(".increase")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          changeQuantity(
+            this.dataset.id,
+            1
+          );
+
+        }
+      );
+
+    });
+
+
+  /* -------------------------
+     ELIMINAR
+  ------------------------- */
+
+  cartItems
+    .querySelectorAll(".remove-item")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          removeFromCart(
+            this.dataset.id
           );
 
         }
@@ -961,65 +1142,32 @@ function renderCart() {
 
 /* =====================================================
    CAMBIAR CANTIDAD
-   ===================================================== */
+===================================================== */
 
-function changeQuantity(
-  id,
-  action
-) {
+function changeQuantity(id, amount) {
 
   const item =
-    cartItemsState.find(
+    cartData.find(
       product =>
-        Number(product.id) ===
-        Number(id)
+        String(product.id) ===
+        String(id)
     );
 
 
   if (!item) return;
 
 
-  if (
-    action === "plus"
-  ) {
-
-    item.quantity++;
-
-  }
+  item.quantity +=
+    amount;
 
 
-  if (
-    action === "minus"
-  ) {
+  if (item.quantity <= 0) {
 
-    item.quantity--;
-
-
-    if (
-      item.quantity <= 0
-    ) {
-
-      cartItemsState =
-        cartItemsState.filter(
-          product =>
-            Number(product.id) !==
-            Number(id)
-        );
-
-    }
-
-  }
-
-
-  if (
-    action === "remove"
-  ) {
-
-    cartItemsState =
-      cartItemsState.filter(
+    cartData =
+      cartData.filter(
         product =>
-          Number(product.id) !==
-          Number(id)
+          String(product.id) !==
+          String(id)
       );
 
   }
@@ -1027,18 +1175,39 @@ function changeQuantity(
 
   saveCart();
 
-  renderCart();
+  updateCart();
+
+}
+
+
+/* =====================================================
+   ELIMINAR DEL CARRITO
+===================================================== */
+
+function removeFromCart(id) {
+
+  cartData =
+    cartData.filter(
+      product =>
+        String(product.id) !==
+        String(id)
+    );
+
+
+  saveCart();
+
+  updateCart();
 
 }
 
 
 /* =====================================================
    ABRIR CARRITO
-   ===================================================== */
+===================================================== */
 
 function openCart() {
 
-  cartElement.classList.add(
+  cart.classList.add(
     "active"
   );
 
@@ -1046,24 +1215,22 @@ function openCart() {
     "active"
   );
 
-  document.body.style.overflow =
-    "hidden";
-
 }
 
 
-function closeCartFunction() {
+/* =====================================================
+   CERRAR CARRITO
+===================================================== */
 
-  cartElement.classList.remove(
+function closeCartPanel() {
+
+  cart.classList.remove(
     "active"
   );
 
   cartOverlay.classList.remove(
     "active"
   );
-
-  document.body.style.overflow =
-    "";
 
 }
 
@@ -1082,7 +1249,7 @@ if (closeCart) {
 
   closeCart.addEventListener(
     "click",
-    closeCartFunction
+    closeCartPanel
   );
 
 }
@@ -1092,7 +1259,7 @@ if (cartOverlay) {
 
   cartOverlay.addEventListener(
     "click",
-    closeCartFunction
+    closeCartPanel
   );
 
 }
@@ -1102,416 +1269,108 @@ if (continueShopping) {
 
   continueShopping.addEventListener(
     "click",
-    closeCartFunction
+    closeCartPanel
   );
 
 }
-
-
-/* =====================================================
-   WHATSAPP
-   ===================================================== */
-
-function checkout() {
-
-  if (
-    cartItemsState.length === 0
-  ) {
-
-    alert(
-      "Tu carrito está vacío."
-    );
-
-    return;
-
-  }
-
-
-  let message =
-    "Hola MILASHES INSUMOS 👋\n\n";
-
-
-  message +=
-    "Quiero realizar el siguiente pedido:\n\n";
-
-
-  let total = 0;
-
-
-  cartItemsState.forEach(item => {
-
-    const product =
-      products.find(
-        p =>
-          Number(p.id) ===
-          Number(item.id)
-      );
-
-
-    if (!product) return;
-
-
-    const subtotal =
-      Number(product.price) *
-      Number(item.quantity);
-
-
-    total += subtotal;
-
-
-    message +=
-      `• ${product.name} x${item.quantity} - ${formatPrice(subtotal)}\n`;
-
-  });
-
-
-  message +=
-    `\nTOTAL: ${formatPrice(total)}\n\n`;
-
-  message +=
-    "Nombre:\n";
-
-  message +=
-    "Localidad:\n";
-
-  message +=
-    "Método de envío:\n";
-
-
-  const url =
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
-
-  window.open(
-    url,
-    "_blank"
-  );
-
-}
-
-
-if (checkoutButton) {
-
-  checkoutButton.addEventListener(
-    "click",
-    checkout
-  );
-
-}
-
-
-/* =====================================================
-   BUSCADOR
-   ===================================================== */
-
-if (searchInput) {
-
-  searchInput.addEventListener(
-    "input",
-    () => {
-
-      searchTerm =
-        searchInput.value;
-
-      renderProducts();
-
-    }
-  );
-
-}
-
-
-if (searchButton) {
-
-  searchButton.addEventListener(
-    "click",
-    () => {
-
-      searchTerm =
-        searchInput.value;
-
-      renderProducts();
-
-
-      document
-        .getElementById(
-          "productos"
-        )
-        ?.scrollIntoView({
-          behavior: "smooth"
-        });
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   FILTRO CATEGORÍA
-   ===================================================== */
-
-document
-  .querySelectorAll(
-    'input[name="category"]'
-  )
-  .forEach(input => {
-
-    input.addEventListener(
-      "change",
-      () => {
-
-        activeCategory =
-          input.value;
-
-        renderProducts();
-
-      }
-    );
-
-  });
-
-
-/* =====================================================
-   FILTRO PRECIO
-   ===================================================== */
-
-document
-  .querySelectorAll(
-    'input[name="price"]'
-  )
-  .forEach(input => {
-
-    input.addEventListener(
-      "change",
-      () => {
-
-        activePrice =
-          input.value;
-
-        renderProducts();
-
-      }
-    );
-
-  });
-
-
-/* =====================================================
-   ORDEN
-   ===================================================== */
-
-const sortProducts =
-  document.getElementById(
-    "sortProducts"
-  );
-
-
-if (sortProducts) {
-
-  sortProducts.addEventListener(
-    "change",
-    renderProducts
-  );
-
-}
-
-
-/* =====================================================
-   LIMPIAR FILTROS
-   ===================================================== */
-
-const clearFilters =
-  document.getElementById(
-    "clearFilters"
-  );
-
-
-if (clearFilters) {
-
-  clearFilters.addEventListener(
-    "click",
-    () => {
-
-      activeCategory =
-        "Todos";
-
-      activePrice =
-        "all";
-
-      searchTerm =
-        "";
-
-
-      if (searchInput) {
-
-        searchInput.value =
-          "";
-
-      }
-
-
-      const category =
-        document.querySelector(
-          'input[name="category"][value="Todos"]'
-        );
-
-
-      if (category) {
-
-        category.checked =
-          true;
-
-      }
-
-
-      const price =
-        document.querySelector(
-          'input[name="price"][value="all"]'
-        );
-
-
-      if (price) {
-
-        price.checked =
-          true;
-
-      }
-
-
-      if (sortProducts) {
-
-        sortProducts.value =
-          "default";
-
-      }
-
-
-      renderProducts();
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   CATEGORÍAS
-   ===================================================== */
-
-document
-  .querySelectorAll(
-    ".category-card, .nav a[data-category]"
-  )
-  .forEach(element => {
-
-    element.addEventListener(
-      "click",
-      event => {
-
-        const category =
-          element.dataset.category;
-
-
-        if (!category) return;
-
-
-        event.preventDefault();
-
-
-        activeCategory =
-          category;
-
-
-        const radio =
-          document.querySelector(
-            `input[name="category"][value="${category}"]`
-          );
-
-
-        if (radio) {
-
-          radio.checked =
-            true;
-
-        }
-
-
-        renderProducts();
-
-
-        document
-          .getElementById(
-            "productos"
-          )
-          ?.scrollIntoView({
-            behavior: "smooth"
-          });
-
-      }
-    );
-
-  });
 
 
 /* =====================================================
    MODAL PRODUCTO
-   ===================================================== */
+===================================================== */
 
-function openProduct(id) {
+function openProductModal(id) {
 
   const product =
     products.find(
-      p =>
-        Number(p.id) ===
-        Number(id)
+      item =>
+        String(item.id) ===
+        String(id)
     );
 
 
   if (!product) return;
 
 
+  const image =
+    getProductImage(product);
+
+
+  const price =
+    Number(product.price) || 0;
+
+
+  const transferPrice =
+    Number(product.transfer_price) || 0;
+
+
   modalContent.innerHTML = `
 
     <div class="modal-product">
 
-      <img
-        src="${product.image}"
-        alt="${product.name}"
-      >
+      <div>
+
+        <img
+          src="${escapeHTML(image)}"
+          alt="${escapeHTML(
+            product.name || "Producto"
+          )}"
+        >
+
+      </div>
 
 
       <div class="modal-info">
 
-        <span class="product-category">
-          ${product.category}
-        </span>
+        <div class="product-category">
+
+          ${escapeHTML(
+            product.category ||
+            "Sin categoría"
+          )}
+
+        </div>
 
 
         <h2>
-          ${product.name}
+
+          ${escapeHTML(
+            product.name ||
+            "Producto"
+          )}
+
         </h2>
 
 
         <p>
-          ${product.description}
+
+          ${escapeHTML(
+            product.description ||
+            "Sin descripción."
+          )}
+
         </p>
 
 
         <div class="modal-price">
-          ${formatPrice(product.price)}
-        </div>
 
-
-        <div class="transfer-price">
-
-          ${formatPrice(
-            product.transfer_price
-          )}
-
-          pagando por transferencia
+          ${formatPrice(price)}
 
         </div>
+
+
+        ${
+          transferPrice > 0
+            ? `
+              <div class="transfer-price">
+
+                Precio transferencia:
+                ${formatPrice(transferPrice)}
+
+              </div>
+            `
+            : ""
+        }
 
 
         <button
@@ -1533,38 +1392,37 @@ function openProduct(id) {
   );
 
 
-  document.body.style.overflow =
-    "hidden";
-
-
-  document
-    .getElementById(
+  const modalAddCart =
+    document.getElementById(
       "modalAddCart"
-    )
-    .addEventListener(
+    );
+
+
+  if (modalAddCart) {
+
+    modalAddCart.addEventListener(
       "click",
-      () => {
+      function() {
 
-        addToCart(
-          product.id
-        );
-
-        closeProductModal();
+        addToCart(product.id);
 
       }
     );
 
+  }
+
 }
 
+
+/* =====================================================
+   CERRAR MODAL
+===================================================== */
 
 function closeProductModal() {
 
   productModal.classList.remove(
     "active"
   );
-
-  document.body.style.overflow =
-    "";
 
 }
 
@@ -1583,7 +1441,7 @@ if (productModal) {
 
   productModal.addEventListener(
     "click",
-    event => {
+    function(event) {
 
       if (
         event.target ===
@@ -1601,14 +1459,121 @@ if (productModal) {
 
 
 /* =====================================================
+   TECLA ESC
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeProductModal();
+
+      closeCartPanel();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CHECKOUT WHATSAPP
+===================================================== */
+
+if (checkoutButton) {
+
+  checkoutButton.addEventListener(
+    "click",
+    function() {
+
+      if (cartData.length === 0) {
+
+        alert(
+          "Tu carrito está vacío."
+        );
+
+        return;
+
+      }
+
+
+      let message =
+        "Hola! Quiero realizar este pedido:%0A%0A";
+
+
+      let total =
+        0;
+
+
+      cartData.forEach(item => {
+
+        const quantity =
+          Number(item.quantity) || 1;
+
+        const price =
+          Number(item.price) || 0;
+
+        const subtotal =
+          quantity * price;
+
+
+        total +=
+          subtotal;
+
+
+        message +=
+          `• ${item.name} x${quantity} - ${formatPrice(subtotal)}%0A`;
+
+      });
+
+
+      message +=
+        `%0ATotal: ${formatPrice(total)}`;
+
+
+      const url =
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   WHATSAPP CONTACTO
+===================================================== */
+
+if (whatsappContact) {
+
+  whatsappContact.href =
+    `https://wa.me/${WHATSAPP_NUMBER}`;
+
+  whatsappContact.target =
+    "_blank";
+
+}
+
+
+/* =====================================================
    MENÚ MOBILE
-   ===================================================== */
+===================================================== */
 
 if (mobileMenu) {
 
   mobileMenu.addEventListener(
     "click",
-    () => {
+    function() {
 
       nav.classList.toggle(
         "active"
@@ -1621,77 +1586,44 @@ if (mobileMenu) {
 
 
 /* =====================================================
-   INSTAGRAM
-   ===================================================== */
+   CERRAR MENÚ MOBILE
+===================================================== */
 
 document
-  .querySelectorAll(
-    'a[target="_blank"]'
-  )
+  .querySelectorAll(".nav a")
   .forEach(link => {
 
-    if (
-      link.textContent
-        .toLowerCase()
-        .includes(
-          "instagram"
-        )
-    ) {
+    link.addEventListener(
+      "click",
+      function() {
 
-      link.href =
-        INSTAGRAM_URL;
+        nav.classList.remove(
+          "active"
+        );
 
-    }
+      }
+    );
 
   });
 
 
 /* =====================================================
-   WHATSAPP CONTACTO
-   ===================================================== */
+   INICIAR TIENDA
+===================================================== */
 
-const whatsappContact =
-  document.getElementById(
-    "whatsappContact"
-  );
-
-
-if (whatsappContact) {
-
-  whatsappContact.href =
-    `https://wa.me/${WHATSAPP_NUMBER}`;
-
-}
-
-
-/* =====================================================
-   ESCAPE
-   ===================================================== */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Escape"
-    ) {
-
-      closeCartFunction();
-
-      closeProductModal();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   INICIAR
-   ===================================================== */
-
-console.log(
-  "MILASHES INSUMOS iniciado."
-);
+updateCart();
 
 loadProducts();
+
+
+/* =====================================================
+   RECARGAR PRODUCTOS AUTOMÁTICAMENTE
+   Cada 30 segundos consulta Supabase.
+   Así los productos nuevos aparecen sin
+   tener que modificar el código.
+===================================================== */
+
+setInterval(
+  loadProducts,
+  30000
+);
