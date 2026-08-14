@@ -1,97 +1,118 @@
 /* =====================================================
    MILASHES INSUMOS
-   Catálogo + buscador + filtros + carrito
+   SCRIPT COMPLETO + SUPABASE
    ===================================================== */
+
+/* =====================================================
+   CONFIGURACIÓN SUPABASE
+   ===================================================== */
+
+const SUPABASE_URL =
+  "https://dnorgfrhhuclcgptgdqm.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
+
+const WHATSAPP_NUMBER = "5491100000000";
+
+const INSTAGRAM_URL = "https://instagram.com/";
 
 
 /* =====================================================
-   CONFIGURACIÓN
+   CLIENTE SUPABASE
    ===================================================== */
 
-const WHATSAPP_NUMBER = "5491156348200";
-const INSTAGRAM_URL = "https://www.instagram.com/mi_lashess_/";
+const supabase = window.supabase;
 
 
 /* =====================================================
    PRODUCTOS
    ===================================================== */
 
-const products = [
+let products = [];
+
+
+/* =====================================================
+   PRODUCTOS DE RESPALDO
+   Si Supabase falla, estos aparecen igualmente.
+   ===================================================== */
+
+const fallbackProducts = [
 
   {
     id: 1,
-    name: "Pestañas 0.05 D",
+    name: "Pestañas Clásicas 0.15 C",
     category: "Pestañas",
     price: 8500,
-    transferPrice: 7650,
-    description: "Pestañas profesionales para extensiones de pestañas.",
+    transfer_price: 7650,
+    description: "Bandeja de pestañas individuales para técnica clásica.",
     image: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=80",
     discount: 10
   },
 
   {
     id: 2,
-    name: "Pestañas 0.07 C",
+    name: "Pestañas Clásicas 0.20 C",
     category: "Pestañas",
-    price: 8500,
-    transferPrice: 7650,
-    description: "Pestañas profesionales para diferentes técnicas.",
+    price: 8900,
+    transfer_price: 8010,
+    description: "Pestañas profesionales de excelente definición y curvatura.",
     image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=700&q=80",
     discount: 10
   },
 
   {
     id: 3,
-    name: "Adhesivo",
-    category: "Adhesivos",
-    price: 12000,
-    transferPrice: 10800,
-    description: "Adhesivo profesional para extensiones de pestañas.",
-    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=700&q=80",
+    name: "Pestañas Volumen 0.07 D",
+    category: "Pestañas",
+    price: 10500,
+    transfer_price: 9450,
+    description: "Fibra liviana para técnicas de volumen y mega volumen.",
+    image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=700&q=80",
     discount: 10
   },
 
   {
     id: 4,
-    name: "Pinza Curva",
-    category: "Pinzas",
-    price: 7000,
-    transferPrice: 6300,
-    description: "Pinza curva de precisión para aplicación de extensiones.",
-    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=80",
+    name: "Pestañas Volumen 0.05 CC",
+    category: "Pestañas",
+    price: 11200,
+    transfer_price: 10080,
+    description: "Curvatura CC ideal para diferentes estilos de volumen.",
+    image: "https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&w=700&q=80",
     discount: 10
   },
 
   {
     id: 5,
-    name: "Pinza Recta",
-    category: "Pinzas",
-    price: 7000,
-    transferPrice: 6300,
-    description: "Pinza recta profesional para aislamiento.",
-    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=700&q=80",
+    name: "Pestañas YY 0.07",
+    category: "Pestañas",
+    price: 9800,
+    transfer_price: 8820,
+    description: "Pestañas YY para lograr mayor volumen de manera práctica.",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=700&q=80",
     discount: 10
   },
 
   {
     id: 6,
-    name: "Parche",
-    category: "Accesorios",
-    price: 5000,
-    transferPrice: 4500,
-    description: "Parche de hidrogel para el trabajo de extensiones.",
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=700&q=80",
+    name: "Pestañas W 0.07",
+    category: "Pestañas",
+    price: 10200,
+    transfer_price: 9180,
+    description: "Pestañas W para volumen y efecto de mayor densidad.",
+    image: "https://images.unsplash.com/photo-1581182800629-7d90925ad072?auto=format&fit=crop&w=700&q=80",
     discount: 10
   },
 
   {
     id: 7,
-    name: "Microbrush",
-    category: "Accesorios",
-    price: 3500,
-    transferPrice: 3150,
-    description: "Microbrush descartables para preparación y aplicación.",
-    image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=700&q=80",
+    name: "Adhesivo Profesional 5 ml",
+    category: "Adhesivos",
+    price: 14500,
+    transfer_price: 13050,
+    description: "Adhesivo profesional de secado rápido para extensiones.",
+    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=700&q=80",
     discount: 10
   }
 
@@ -102,7 +123,7 @@ const products = [
    ESTADO
    ===================================================== */
 
-let cartItemsData =
+let cartItemsState =
   JSON.parse(localStorage.getItem("milashesCart")) || [];
 
 let activeCategory = "Todos";
@@ -132,7 +153,7 @@ const searchButton =
 const cartButton =
   document.getElementById("cartButton");
 
-const cartPanel =
+const cartElement =
   document.getElementById("cart");
 
 const cartOverlay =
@@ -173,7 +194,7 @@ const nav =
 
 
 /* =====================================================
-   FORMATEAR PRECIO
+   PRECIO
    ===================================================== */
 
 function formatPrice(price) {
@@ -182,7 +203,160 @@ function formatPrice(price) {
     style: "currency",
     currency: "ARS",
     maximumFractionDigits: 0
-  }).format(price);
+  }).format(Number(price) || 0);
+
+}
+
+
+/* =====================================================
+   CARGAR SUPABASE
+   ===================================================== */
+
+async function loadProducts() {
+
+  console.log("Conectando con Supabase...");
+
+  try {
+
+    if (!supabase) {
+
+      throw new Error(
+        "La librería de Supabase no está cargada."
+      );
+
+    }
+
+
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/products?select=*`,
+        {
+          method: "GET",
+
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`,
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+
+
+    if (!response.ok) {
+
+      const errorText =
+        await response.text();
+
+      throw new Error(
+        `Supabase respondió ${response.status}: ${errorText}`
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "Productos recibidos desde Supabase:",
+      data
+    );
+
+
+    if (!Array.isArray(data)) {
+
+      throw new Error(
+        "Supabase no devolvió una lista de productos."
+      );
+
+    }
+
+
+    products =
+      data.map(product => ({
+
+        id: product.id,
+
+        name:
+          product.name || "Producto sin nombre",
+
+        category:
+          product.category || "Sin categoría",
+
+        price:
+          Number(product.price) || 0,
+
+        transfer_price:
+          Number(product.transfer_price) ||
+          Number(product.price) || 0,
+
+        description:
+          product.description || "",
+
+        image:
+          product.image ||
+          "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=80",
+
+        discount:
+          Number(product.discount) || 0
+
+      }));
+
+
+    console.log(
+      `Se cargaron ${products.length} productos.`
+    );
+
+
+    /*
+     Si Supabase está vacío, usamos ejemplos.
+    */
+
+    if (products.length === 0) {
+
+      console.warn(
+        "La tabla products está vacía. Se utilizarán productos de ejemplo."
+      );
+
+      products = fallbackProducts;
+
+    }
+
+
+    renderProducts();
+    renderCart();
+
+  }
+
+
+  catch (error) {
+
+    console.error(
+      "ERROR SUPABASE:",
+      error
+    );
+
+
+    /*
+     Si hay error, mostramos productos
+     de respaldo.
+    */
+
+    products = fallbackProducts;
+
+
+    renderProducts();
+    renderCart();
+
+
+    console.warn(
+      "Se utilizaron productos de respaldo."
+    );
+
+  }
 
 }
 
@@ -193,62 +367,107 @@ function formatPrice(price) {
 
 function renderProducts() {
 
-  let filtered = [...products];
+  if (!productGrid) return;
 
 
-  /* BÚSQUEDA */
+  let filtered =
+    [...products];
 
-  if (searchTerm.trim() !== "") {
+
+  /* BUSCADOR */
+
+  if (
+    searchTerm.trim() !== ""
+  ) {
 
     const term =
-      searchTerm.toLowerCase().trim();
+      searchTerm
+        .toLowerCase()
+        .trim();
 
-    filtered = filtered.filter(product =>
-      product.name.toLowerCase().includes(term) ||
-      product.category.toLowerCase().includes(term) ||
-      product.description.toLowerCase().includes(term)
-    );
+
+    filtered =
+      filtered.filter(product =>
+
+        product.name
+          .toLowerCase()
+          .includes(term)
+
+        ||
+
+        product.category
+          .toLowerCase()
+          .includes(term)
+
+        ||
+
+        product.description
+          .toLowerCase()
+          .includes(term)
+
+      );
 
   }
 
 
   /* CATEGORÍA */
 
-  if (activeCategory !== "Todos") {
+  if (
+    activeCategory !== "Todos"
+  ) {
 
-    filtered = filtered.filter(product =>
-      product.category === activeCategory
-    );
+    filtered =
+      filtered.filter(product =>
+
+        product.category ===
+        activeCategory
+
+      );
 
   }
 
 
   /* PRECIO */
 
-  if (activePrice === "under10000") {
+  if (
+    activePrice ===
+    "under10000"
+  ) {
 
-    filtered = filtered.filter(product =>
-      product.price < 10000
-    );
-
-  }
-
-
-  if (activePrice === "10000-20000") {
-
-    filtered = filtered.filter(product =>
-      product.price >= 10000 &&
-      product.price <= 20000
-    );
+    filtered =
+      filtered.filter(product =>
+        Number(product.price) < 10000
+      );
 
   }
 
 
-  if (activePrice === "over20000") {
+  if (
+    activePrice ===
+    "10000-20000"
+  ) {
 
-    filtered = filtered.filter(product =>
-      product.price > 20000
-    );
+    filtered =
+      filtered.filter(product =>
+
+        Number(product.price) >= 10000 &&
+
+        Number(product.price) <= 20000
+
+      );
+
+  }
+
+
+  if (
+    activePrice ===
+    "over20000"
+  ) {
+
+    filtered =
+      filtered.filter(product =>
+        Number(product.price) > 20000
+      );
 
   }
 
@@ -256,7 +475,10 @@ function renderProducts() {
   /* ORDEN */
 
   const sortElement =
-    document.getElementById("sortProducts");
+    document.getElementById(
+      "sortProducts"
+    );
+
 
   if (sortElement) {
 
@@ -264,28 +486,41 @@ function renderProducts() {
       sortElement.value;
 
 
-    if (sort === "price-low") {
+    if (
+      sort === "price-low"
+    ) {
 
-      filtered.sort((a, b) =>
-        a.price - b.price
+      filtered.sort(
+        (a, b) =>
+          Number(a.price) -
+          Number(b.price)
       );
 
     }
 
 
-    if (sort === "price-high") {
+    if (
+      sort === "price-high"
+    ) {
 
-      filtered.sort((a, b) =>
-        b.price - a.price
+      filtered.sort(
+        (a, b) =>
+          Number(b.price) -
+          Number(a.price)
       );
 
     }
 
 
-    if (sort === "name") {
+    if (
+      sort === "name"
+    ) {
 
-      filtered.sort((a, b) =>
-        a.name.localeCompare(b.name)
+      filtered.sort(
+        (a, b) =>
+          a.name.localeCompare(
+            b.name
+          )
       );
 
     }
@@ -300,30 +535,49 @@ function renderProducts() {
 
   /* RESULTADOS */
 
-  resultsCount.textContent =
-    `${filtered.length} producto${filtered.length !== 1 ? "s" : ""}`;
+  if (resultsCount) {
+
+    resultsCount.textContent =
+      `${filtered.length} producto${filtered.length !== 1 ? "s" : ""}`;
+
+  }
 
 
   /* SIN RESULTADOS */
 
-  if (filtered.length === 0) {
+  if (
+    filtered.length === 0
+  ) {
 
-    noResults.style.display = "block";
+    if (noResults) {
+
+      noResults.style.display =
+        "block";
+
+    }
 
     return;
 
   }
 
 
-  noResults.style.display = "none";
+  if (noResults) {
+
+    noResults.style.display =
+      "none";
+
+  }
 
 
-  /* CREAR TARJETAS */
+  /* PRODUCTOS */
 
   filtered.forEach(product => {
 
     const card =
-      document.createElement("article");
+      document.createElement(
+        "article"
+      );
+
 
     card.className =
       "product-card";
@@ -337,12 +591,16 @@ function renderProducts() {
           src="${product.image}"
           alt="${product.name}"
           loading="lazy"
-          onerror="this.src='https://via.placeholder.com/700x700?text=MILASHES'"
+          onerror="this.src='https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=80'"
         >
 
         ${
-          product.discount
-            ? `<span class="discount">-${product.discount}%</span>`
+          product.discount > 0
+            ? `
+              <span class="discount">
+                -${product.discount}%
+              </span>
+            `
             : ""
         }
 
@@ -355,22 +613,32 @@ function renderProducts() {
           ${product.category}
         </span>
 
+
         <h3 class="product-name">
           ${product.name}
         </h3>
+
 
         <p class="product-description">
           ${product.description}
         </p>
 
+
         <div class="price">
           ${formatPrice(product.price)}
         </div>
 
+
         <div class="transfer-price">
-          ${formatPrice(product.transferPrice)}
+
+          ${formatPrice(
+            product.transfer_price
+          )}
+
           pagando por transferencia
+
         </div>
+
 
         <button
           class="add-cart"
@@ -378,6 +646,7 @@ function renderProducts() {
         >
           AGREGAR AL CARRITO
         </button>
+
 
         <span
           class="view-product"
@@ -396,7 +665,7 @@ function renderProducts() {
   });
 
 
-  /* BOTONES AGREGAR */
+  /* BOTONES CARRITO */
 
   document
     .querySelectorAll(".add-cart")
@@ -407,7 +676,9 @@ function renderProducts() {
         () => {
 
           addToCart(
-            Number(button.dataset.id)
+            Number(
+              button.dataset.id
+            )
           );
 
         }
@@ -427,7 +698,9 @@ function renderProducts() {
         () => {
 
           openProduct(
-            Number(button.dataset.id)
+            Number(
+              button.dataset.id
+            )
           );
 
         }
@@ -439,14 +712,15 @@ function renderProducts() {
 
 
 /* =====================================================
-   AGREGAR AL CARRITO
+   CARRITO
    ===================================================== */
 
 function addToCart(productId) {
 
   const product =
     products.find(
-      p => p.id === productId
+      p => Number(p.id) ===
+      Number(productId)
     );
 
 
@@ -454,8 +728,10 @@ function addToCart(productId) {
 
 
   const existing =
-    cartItemsData.find(
-      item => item.id === productId
+    cartItemsState.find(
+      item =>
+        Number(item.id) ===
+        Number(productId)
     );
 
 
@@ -463,9 +739,11 @@ function addToCart(productId) {
 
     existing.quantity++;
 
-  } else {
+  }
 
-    cartItemsData.push({
+  else {
+
+    cartItemsState.push({
 
       id: product.id,
 
@@ -485,30 +763,33 @@ function addToCart(productId) {
 }
 
 
-/* =====================================================
-   GUARDAR CARRITO
-   ===================================================== */
-
 function saveCart() {
 
   localStorage.setItem(
     "milashesCart",
-    JSON.stringify(cartItemsData)
+    JSON.stringify(
+      cartItemsState
+    )
   );
 
 }
 
 
 /* =====================================================
-   RENDER CARRITO
+   MOSTRAR CARRITO
    ===================================================== */
 
 function renderCart() {
 
+  if (!cartItems) return;
+
+
   cartItems.innerHTML = "";
 
 
-  if (cartItemsData.length === 0) {
+  if (
+    cartItemsState.length === 0
+  ) {
 
     cartItems.innerHTML = `
 
@@ -540,15 +821,16 @@ function renderCart() {
 
 
   let total = 0;
-
   let quantityTotal = 0;
 
 
-  cartItemsData.forEach(item => {
+  cartItemsState.forEach(item => {
 
     const product =
       products.find(
-        p => p.id === item.id
+        p =>
+          Number(p.id) ===
+          Number(item.id)
       );
 
 
@@ -556,16 +838,20 @@ function renderCart() {
 
 
     const subtotal =
-      product.price * item.quantity;
+      Number(product.price) *
+      Number(item.quantity);
 
 
     total += subtotal;
 
-    quantityTotal += item.quantity;
+    quantityTotal +=
+      Number(item.quantity);
 
 
     const element =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
 
     element.className =
@@ -577,7 +863,6 @@ function renderCart() {
       <img
         src="${product.image}"
         alt="${product.name}"
-        onerror="this.src='https://via.placeholder.com/150x150?text=MILASHES'"
       >
 
 
@@ -631,7 +916,9 @@ function renderCart() {
     `;
 
 
-    cartItems.appendChild(element);
+    cartItems.appendChild(
+      element
+    );
 
   });
 
@@ -644,26 +931,24 @@ function renderCart() {
     formatPrice(total);
 
 
-  /* EVENTOS */
-
   document
-    .querySelectorAll(".quantity button")
+    .querySelectorAll(
+      ".quantity button"
+    )
     .forEach(button => {
 
       button.addEventListener(
         "click",
         () => {
 
-          const id =
-            Number(button.dataset.id);
-
-          const action =
-            button.dataset.action;
-
-
           changeQuantity(
-            id,
-            action
+
+            Number(
+              button.dataset.id
+            ),
+
+            button.dataset.action
+
           );
 
         }
@@ -678,33 +963,47 @@ function renderCart() {
    CAMBIAR CANTIDAD
    ===================================================== */
 
-function changeQuantity(id, action) {
+function changeQuantity(
+  id,
+  action
+) {
 
   const item =
-    cartItemsData.find(
-      product => product.id === id
+    cartItemsState.find(
+      product =>
+        Number(product.id) ===
+        Number(id)
     );
 
 
   if (!item) return;
 
 
-  if (action === "plus") {
+  if (
+    action === "plus"
+  ) {
 
     item.quantity++;
 
   }
 
 
-  if (action === "minus") {
+  if (
+    action === "minus"
+  ) {
 
     item.quantity--;
 
-    if (item.quantity <= 0) {
 
-      cartItemsData =
-        cartItemsData.filter(
-          product => product.id !== id
+    if (
+      item.quantity <= 0
+    ) {
+
+      cartItemsState =
+        cartItemsState.filter(
+          product =>
+            Number(product.id) !==
+            Number(id)
         );
 
     }
@@ -712,11 +1011,15 @@ function changeQuantity(id, action) {
   }
 
 
-  if (action === "remove") {
+  if (
+    action === "remove"
+  ) {
 
-    cartItemsData =
-      cartItemsData.filter(
-        product => product.id !== id
+    cartItemsState =
+      cartItemsState.filter(
+        product =>
+          Number(product.id) !==
+          Number(id)
       );
 
   }
@@ -735,9 +1038,13 @@ function changeQuantity(id, action) {
 
 function openCart() {
 
-  cartPanel.classList.add("active");
+  cartElement.classList.add(
+    "active"
+  );
 
-  cartOverlay.classList.add("active");
+  cartOverlay.classList.add(
+    "active"
+  );
 
   document.body.style.overflow =
     "hidden";
@@ -745,25 +1052,21 @@ function openCart() {
 }
 
 
-/* =====================================================
-   CERRAR CARRITO
-   ===================================================== */
-
 function closeCartFunction() {
 
-  cartPanel.classList.remove("active");
+  cartElement.classList.remove(
+    "active"
+  );
 
-  cartOverlay.classList.remove("active");
+  cartOverlay.classList.remove(
+    "active"
+  );
 
   document.body.style.overflow =
     "";
 
 }
 
-
-/* =====================================================
-   EVENTOS CARRITO
-   ===================================================== */
 
 if (cartButton) {
 
@@ -806,22 +1109,14 @@ if (continueShopping) {
 
 
 /* =====================================================
-   CHECKOUT WHATSAPP
+   WHATSAPP
    ===================================================== */
-
-if (checkoutButton) {
-
-  checkoutButton.addEventListener(
-    "click",
-    checkout
-  );
-
-}
-
 
 function checkout() {
 
-  if (cartItemsData.length === 0) {
+  if (
+    cartItemsState.length === 0
+  ) {
 
     alert(
       "Tu carrito está vacío."
@@ -843,11 +1138,13 @@ function checkout() {
   let total = 0;
 
 
-  cartItemsData.forEach(item => {
+  cartItemsState.forEach(item => {
 
     const product =
       products.find(
-        p => p.id === item.id
+        p =>
+          Number(p.id) ===
+          Number(item.id)
       );
 
 
@@ -855,7 +1152,8 @@ function checkout() {
 
 
     const subtotal =
-      product.price * item.quantity;
+      Number(product.price) *
+      Number(item.quantity);
 
 
     total += subtotal;
@@ -870,14 +1168,11 @@ function checkout() {
   message +=
     `\nTOTAL: ${formatPrice(total)}\n\n`;
 
-
   message +=
     "Nombre:\n";
 
-
   message +=
     "Localidad:\n";
-
 
   message +=
     "Método de envío:\n";
@@ -890,6 +1185,16 @@ function checkout() {
   window.open(
     url,
     "_blank"
+  );
+
+}
+
+
+if (checkoutButton) {
+
+  checkoutButton.addEventListener(
+    "click",
+    checkout
   );
 
 }
@@ -928,19 +1233,13 @@ if (searchButton) {
       renderProducts();
 
 
-      const productos =
-        document.getElementById(
+      document
+        .getElementById(
           "productos"
-        );
-
-
-      if (productos) {
-
-        productos.scrollIntoView({
+        )
+        ?.scrollIntoView({
           behavior: "smooth"
         });
-
-      }
 
     }
   );
@@ -949,7 +1248,7 @@ if (searchButton) {
 
 
 /* =====================================================
-   FILTROS CATEGORÍA
+   FILTRO CATEGORÍA
    ===================================================== */
 
 document
@@ -974,7 +1273,7 @@ document
 
 
 /* =====================================================
-   FILTROS PRECIO
+   FILTRO PRECIO
    ===================================================== */
 
 document
@@ -999,7 +1298,7 @@ document
 
 
 /* =====================================================
-   ORDENAR
+   ORDEN
    ===================================================== */
 
 const sortProducts =
@@ -1034,42 +1333,48 @@ if (clearFilters) {
     "click",
     () => {
 
-      activeCategory = "Todos";
+      activeCategory =
+        "Todos";
 
-      activePrice = "all";
+      activePrice =
+        "all";
 
-      searchTerm = "";
+      searchTerm =
+        "";
 
 
       if (searchInput) {
 
-        searchInput.value = "";
+        searchInput.value =
+          "";
 
       }
 
 
-      const categoryTodos =
+      const category =
         document.querySelector(
           'input[name="category"][value="Todos"]'
         );
 
 
-      if (categoryTodos) {
+      if (category) {
 
-        categoryTodos.checked = true;
+        category.checked =
+          true;
 
       }
 
 
-      const priceAll =
+      const price =
         document.querySelector(
           'input[name="price"][value="all"]'
         );
 
 
-      if (priceAll) {
+      if (price) {
 
-        priceAll.checked = true;
+        price.checked =
+          true;
 
       }
 
@@ -1126,7 +1431,8 @@ document
 
         if (radio) {
 
-          radio.checked = true;
+          radio.checked =
+            true;
 
         }
 
@@ -1134,19 +1440,13 @@ document
         renderProducts();
 
 
-        const productos =
-          document.getElementById(
+        document
+          .getElementById(
             "productos"
-          );
-
-
-        if (productos) {
-
-          productos.scrollIntoView({
+          )
+          ?.scrollIntoView({
             behavior: "smooth"
           });
-
-        }
 
       }
     );
@@ -1162,7 +1462,9 @@ function openProduct(id) {
 
   const product =
     products.find(
-      p => p.id === id
+      p =>
+        Number(p.id) ===
+        Number(id)
     );
 
 
@@ -1176,7 +1478,6 @@ function openProduct(id) {
       <img
         src="${product.image}"
         alt="${product.name}"
-        onerror="this.src='https://via.placeholder.com/700x700?text=MILASHES'"
       >
 
 
@@ -1203,8 +1504,13 @@ function openProduct(id) {
 
 
         <div class="transfer-price">
-          ${formatPrice(product.transferPrice)}
+
+          ${formatPrice(
+            product.transfer_price
+          )}
+
           pagando por transferencia
+
         </div>
 
 
@@ -1231,33 +1537,25 @@ function openProduct(id) {
     "hidden";
 
 
-  const modalAddCart =
-    document.getElementById(
+  document
+    .getElementById(
       "modalAddCart"
-    );
-
-
-  if (modalAddCart) {
-
-    modalAddCart.addEventListener(
+    )
+    .addEventListener(
       "click",
       () => {
 
-        addToCart(product.id);
+        addToCart(
+          product.id
+        );
 
         closeProductModal();
 
       }
     );
 
-  }
-
 }
 
-
-/* =====================================================
-   CERRAR MODAL
-   ===================================================== */
 
 function closeProductModal() {
 
@@ -1288,7 +1586,8 @@ if (productModal) {
     event => {
 
       if (
-        event.target === productModal
+        event.target ===
+        productModal
       ) {
 
         closeProductModal();
@@ -1305,7 +1604,7 @@ if (productModal) {
    MENÚ MOBILE
    ===================================================== */
 
-if (mobileMenu && nav) {
+if (mobileMenu) {
 
   mobileMenu.addEventListener(
     "click",
@@ -1334,7 +1633,9 @@ document
     if (
       link.textContent
         .toLowerCase()
-        .includes("instagram")
+        .includes(
+          "instagram"
+        )
     ) {
 
       link.href =
@@ -1346,7 +1647,7 @@ document
 
 
 /* =====================================================
-   WHATSAPP
+   WHATSAPP CONTACTO
    ===================================================== */
 
 const whatsappContact =
@@ -1364,14 +1665,16 @@ if (whatsappContact) {
 
 
 /* =====================================================
-   ESCAPE PARA CERRAR
+   ESCAPE
    ===================================================== */
 
 document.addEventListener(
   "keydown",
   event => {
 
-    if (event.key === "Escape") {
+    if (
+      event.key === "Escape"
+    ) {
 
       closeCartFunction();
 
@@ -1384,9 +1687,11 @@ document.addEventListener(
 
 
 /* =====================================================
-   INICIALIZACIÓN
+   INICIAR
    ===================================================== */
 
-renderProducts();
+console.log(
+  "MILASHES INSUMOS iniciado."
+);
 
-renderCart();
+loadProducts();
