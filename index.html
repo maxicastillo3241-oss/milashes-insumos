@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MILASHES INSUMOS - Insumos profesionales para extensiones de pestañas">
+
+  <meta
+    name="description"
+    content="MILASHES INSUMOS - Insumos profesionales para extensiones de pestañas"
+  >
+
   <title>MILASHES INSUMOS</title>
 
+  <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -14,29 +21,57 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="./style.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
-  <!-- BARRA SUPERIOR -->
+  <!-- =====================================================
+       BARRA SUPERIOR
+  ====================================================== -->
+
   <div class="topbar">
-    <div>🚚 Envíos a todo el país</div>
-    <div>💳 Consultá nuestros medios de pago</div>
+
+    <div>
+      🚚 Envíos a todo el país
+    </div>
+
+    <div>
+      💳 Consultá nuestros medios de pago
+    </div>
+
   </div>
 
 
-  <!-- HEADER -->
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
   <header class="header">
 
-    <button class="mobile-menu" id="mobileMenu">
+    <button
+      class="mobile-menu"
+      id="mobileMenu"
+      type="button"
+    >
       ☰
     </button>
 
+
     <a href="#" class="logo">
-      <span>MILASHES</span>
-      <small>INSUMOS PROFESIONALES</small>
+
+      <span>
+        MILASHES
+      </span>
+
+      <small>
+        INSUMOS PROFESIONALES
+      </small>
+
     </a>
+
 
     <div class="search">
 
@@ -47,32 +82,42 @@
         autocomplete="off"
       >
 
-      <button id="searchButton">
+      <button
+        id="searchButton"
+        type="button"
+      >
         🔍
       </button>
 
     </div>
 
+
     <div class="header-actions">
 
       <button
         class="account-btn"
+        type="button"
         title="Mi cuenta"
       >
         👤
       </button>
 
+
       <button
         class="cart-button"
         id="cartButton"
+        type="button"
       >
+
         🛒
+
         <span
           class="cart-count"
           id="cartCount"
         >
           0
         </span>
+
       </button>
 
     </div>
@@ -80,8 +125,14 @@
   </header>
 
 
-  <!-- NAVEGACIÓN -->
-  <nav class="nav" id="nav">
+  <!-- =====================================================
+       NAVEGACIÓN
+  ====================================================== -->
+
+  <nav
+    class="nav"
+    id="nav"
+  >
 
     <a
       href="#"
@@ -132,7 +183,10 @@
   </nav>
 
 
-  <!-- HERO -->
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
   <section class="hero">
 
     <div class="hero-content">
@@ -141,15 +195,23 @@
         MILASHES · INSUMOS PROFESIONALES
       </span>
 
+
       <h1>
+
         Todo para tus
-        <strong>pestañas</strong>
+
+        <strong>
+          pestañas
+        </strong>
+
       </h1>
+
 
       <p>
         Todo lo que necesitás para crear miradas increíbles.
         Insumos profesionales para lashistas, con calidad y variedad.
       </p>
+
 
       <a
         href="#productos"
@@ -163,7 +225,10 @@
   </section>
 
 
-  <!-- CATEGORÍAS -->
+  <!-- =====================================================
+       CATEGORÍAS
+  ====================================================== -->
+
   <section class="categories">
 
     <div class="section-title">
@@ -184,38 +249,47 @@
       <button
         class="category-card"
         data-category="Pestañas"
+        type="button"
       >
         <div>👁️</div>
         <span>Pestañas</span>
       </button>
 
+
       <button
         class="category-card"
         data-category="Adhesivos"
+        type="button"
       >
         <div>💧</div>
         <span>Adhesivos</span>
       </button>
 
+
       <button
         class="category-card"
         data-category="Pinzas"
+        type="button"
       >
         <div>✂️</div>
         <span>Pinzas</span>
       </button>
 
+
       <button
         class="category-card"
         data-category="Accesorios"
+        type="button"
       >
         <div>✨</div>
         <span>Accesorios</span>
       </button>
 
+
       <button
         class="category-card"
         data-category="Kits"
+        type="button"
       >
         <div>🎁</div>
         <span>Kits</span>
@@ -226,7 +300,10 @@
   </section>
 
 
-  <!-- PRODUCTOS -->
+  <!-- =====================================================
+       PRODUCTOS
+  ====================================================== -->
+
   <main
     class="products-section"
     id="productos"
@@ -272,7 +349,9 @@
 
     <div class="shop-layout">
 
+
       <!-- FILTROS -->
+
       <aside
         class="filters"
         id="filters"
@@ -284,7 +363,10 @@
             Filtrar productos
           </h3>
 
-          <button id="clearFilters">
+          <button
+            id="clearFilters"
+            type="button"
+          >
             Limpiar
           </button>
 
@@ -297,6 +379,7 @@
             Categoría
           </h4>
 
+
           <label>
             <input
               type="radio"
@@ -307,6 +390,7 @@
             Todos
           </label>
 
+
           <label>
             <input
               type="radio"
@@ -315,6 +399,7 @@
             >
             Pestañas
           </label>
+
 
           <label>
             <input
@@ -325,6 +410,7 @@
             Adhesivos
           </label>
 
+
           <label>
             <input
               type="radio"
@@ -334,6 +420,7 @@
             Pinzas
           </label>
 
+
           <label>
             <input
               type="radio"
@@ -342,6 +429,7 @@
             >
             Accesorios
           </label>
+
 
           <label>
             <input
@@ -361,6 +449,7 @@
             Precio
           </h4>
 
+
           <label>
             <input
               type="radio"
@@ -371,6 +460,7 @@
             Todos
           </label>
 
+
           <label>
             <input
               type="radio"
@@ -380,6 +470,7 @@
             Hasta $10.000
           </label>
 
+
           <label>
             <input
               type="radio"
@@ -388,6 +479,7 @@
             >
             $10.000 - $20.000
           </label>
+
 
           <label>
             <input
@@ -404,6 +496,7 @@
 
 
       <!-- GRILLA -->
+
       <section class="products-container">
 
         <div class="results-info">
@@ -426,7 +519,9 @@
           id="noResults"
         >
 
-          <div>🔎</div>
+          <div>
+            🔎
+          </div>
 
           <h3>
             No encontramos productos
@@ -445,7 +540,10 @@
   </main>
 
 
-  <!-- BANNER -->
+  <!-- =====================================================
+       BANNER
+  ====================================================== -->
+
   <section class="banner">
 
     <div>
@@ -464,6 +562,7 @@
 
     </div>
 
+
     <a href="#productos">
       VER CATÁLOGO
     </a>
@@ -471,7 +570,10 @@
   </section>
 
 
-  <!-- CONTACTO -->
+  <!-- =====================================================
+       CONTACTO
+  ====================================================== -->
+
   <section
     class="contact"
     id="contacto"
@@ -492,9 +594,12 @@
 
     <div class="contact-grid">
 
+
       <div class="contact-card">
 
-        <div>📱</div>
+        <div>
+          📱
+        </div>
 
         <h3>
           WhatsApp
@@ -516,7 +621,9 @@
 
       <div class="contact-card">
 
-        <div>📷</div>
+        <div>
+          📷
+        </div>
 
         <h3>
           Instagram
@@ -538,7 +645,9 @@
 
       <div class="contact-card">
 
-        <div>🚚</div>
+        <div>
+          🚚
+        </div>
 
         <h3>
           Envíos
@@ -555,7 +664,10 @@
   </section>
 
 
-  <!-- FOOTER -->
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
   <footer>
 
     <div class="footer-logo">
@@ -569,6 +681,7 @@
       </small>
 
     </div>
+
 
     <p>
       Insumos profesionales para extensiones de pestañas.
@@ -599,7 +712,10 @@
   </footer>
 
 
-  <!-- CARRITO -->
+  <!-- =====================================================
+       CARRITO
+  ====================================================== -->
+
   <div
     class="cart-overlay"
     id="cartOverlay"
@@ -617,7 +733,10 @@
         Mi carrito
       </h2>
 
-      <button id="closeCart">
+      <button
+        id="closeCart"
+        type="button"
+      >
         ×
       </button>
 
@@ -631,7 +750,9 @@
 
       <div class="empty-cart">
 
-        <div>🛒</div>
+        <div>
+          🛒
+        </div>
 
         <h3>
           Tu carrito está vacío
@@ -664,6 +785,7 @@
       <button
         class="checkout-button"
         id="checkoutButton"
+        type="button"
       >
         FINALIZAR PEDIDO
       </button>
@@ -672,6 +794,7 @@
       <button
         class="continue-button"
         id="continueShopping"
+        type="button"
       >
         Seguir comprando
       </button>
@@ -681,7 +804,10 @@
   </aside>
 
 
-  <!-- MODAL PRODUCTO -->
+  <!-- =====================================================
+       MODAL PRODUCTO
+  ====================================================== -->
+
   <div
     class="modal-overlay"
     id="productModal"
@@ -692,9 +818,11 @@
       <button
         class="modal-close"
         id="closeModal"
+        type="button"
       >
         ×
       </button>
+
 
       <div id="modalContent"></div>
 
@@ -703,18 +831,24 @@
   </div>
 
 
-  <!-- =================================================
+  <!-- =====================================================
        SUPABASE
-       DEBE CARGARSE ANTES DE script.js
-  ================================================== -->
+       
+       IMPORTANTE:
+       SUPABASE SE CARGA ANTES DE script.js
+  ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- =================================================
-       SCRIPT DE LA TIENDA
-  ================================================== -->
 
-  <script src="./script.js"></script>
+  <!-- =====================================================
+       SCRIPT DE LA TIENDA
+       
+       SE CARGA UNA SOLA VEZ
+  ====================================================== -->
+
+  <script src="script.js"></script>
+
 
 </body>
 </html>
