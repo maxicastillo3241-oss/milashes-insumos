@@ -9,14 +9,18 @@
    SUPABASE
 ===================================================== */
 
-const SUPABASE_URL = "https://dnorgfrhhuclcgptgdqm.supabase.co";
+const SUPABASE_URL =
+  "https://dnorgfrhhuclcgptgdqm.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
+const SUPABASE_KEY =
+  "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
 
 /* =====================================================
    ELEMENTOS
@@ -103,15 +107,22 @@ let cartData =
 
 /* =====================================================
    CONFIGURACIÓN WHATSAPP
-   CAMBIÁ EL NÚMERO POR EL DE MILASHES
 ===================================================== */
 
-const WHATSAPP_NUMBER = "5491156348200";
+const WHATSAPP_NUMBER =
+  "5491156348200";
+
 
 if (whatsappContact) {
-  whatsappContact.href = `https://wa.me/${WHATSAPP_NUMBER}`;
-  whatsappContact.target = "_blank";
+
+  whatsappContact.href =
+    `https://wa.me/${WHATSAPP_NUMBER}`;
+
+  whatsappContact.target =
+    "_blank";
+
 }
+
 
 /* =====================================================
    FORMATO DE PRECIO
@@ -119,11 +130,16 @@ if (whatsappContact) {
 
 function formatPrice(price) {
 
-  return new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0
-  }).format(Number(price) || 0);
+  return new Intl.NumberFormat(
+    "es-AR",
+    {
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 0
+    }
+  ).format(
+    Number(price) || 0
+  );
 
 }
 
@@ -150,9 +166,10 @@ function escapeHTML(value) {
 
 function getProductImage(product) {
 
-  return product.image ||
-    "https://via.placeholder.com/600x600?text=MILASHES";
-
+  return (
+    product.image ||
+    "https://via.placeholder.com/600x600?text=MILASHES"
+  );
 
 }
 
@@ -164,6 +181,7 @@ function getProductImage(product) {
 async function loadProducts() {
 
   productGrid.innerHTML = `
+
     <div style="
       grid-column:1/-1;
       text-align:center;
@@ -171,11 +189,16 @@ async function loadProducts() {
       color:#777;
       font-size:12px;
     ">
+
       Cargando productos...
+
     </div>
+
   `;
 
-  noResults.style.display = "none";
+
+  noResults.style.display =
+    "none";
 
 
   const {
@@ -186,9 +209,12 @@ async function loadProducts() {
       .from("products")
       .select("*")
       .eq("active", true)
-      .order("id", {
-        ascending: false
-      });
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
 
 
   if (error) {
@@ -198,7 +224,9 @@ async function loadProducts() {
       error
     );
 
+
     productGrid.innerHTML = `
+
       <div style="
         grid-column:1/-1;
         text-align:center;
@@ -206,21 +234,31 @@ async function loadProducts() {
         color:#c45b68;
         font-size:12px;
       ">
+
         No se pudieron cargar los productos.
+
         <br><br>
-        ${escapeHTML(error.message)}
+
+        ${escapeHTML(
+          error.message
+        )}
+
       </div>
+
     `;
+
 
     resultsCount.textContent =
       "0 productos";
+
 
     return;
 
   }
 
 
-  products = data || [];
+  products =
+    data || [];
 
 
   console.log(
@@ -245,6 +283,7 @@ function getSelectedCategory() {
       'input[name="category"]:checked'
     );
 
+
   return selected
     ? selected.value
     : "Todos";
@@ -258,6 +297,7 @@ function getSelectedPrice() {
     document.querySelector(
       'input[name="price"]:checked'
     );
+
 
   return selected
     ? selected.value
@@ -290,10 +330,13 @@ function applyFilters() {
   ) {
 
     filtered =
-      filtered.filter(product =>
-        String(product.category || "")
-          .toLowerCase() ===
-        category.toLowerCase()
+      filtered.filter(
+        product =>
+          String(
+            product.category || ""
+          )
+            .toLowerCase() ===
+          category.toLowerCase()
       );
 
   }
@@ -307,32 +350,48 @@ function applyFilters() {
     getSelectedPrice();
 
 
-  if (priceFilter === "under10000") {
+  if (
+    priceFilter ===
+    "under10000"
+  ) {
 
     filtered =
-      filtered.filter(product =>
-        Number(product.price) < 10000
+      filtered.filter(
+        product =>
+          Number(product.price) <
+          10000
       );
 
   }
 
 
-  if (priceFilter === "10000-20000") {
+  if (
+    priceFilter ===
+    "10000-20000"
+  ) {
 
     filtered =
-      filtered.filter(product =>
-        Number(product.price) >= 10000 &&
-        Number(product.price) <= 20000
+      filtered.filter(
+        product =>
+          Number(product.price) >=
+            10000 &&
+          Number(product.price) <=
+            20000
       );
 
   }
 
 
-  if (priceFilter === "over20000") {
+  if (
+    priceFilter ===
+    "over20000"
+  ) {
 
     filtered =
-      filtered.filter(product =>
-        Number(product.price) > 20000
+      filtered.filter(
+        product =>
+          Number(product.price) >
+          20000
       );
 
   }
@@ -353,27 +412,35 @@ function applyFilters() {
   if (search) {
 
     filtered =
-      filtered.filter(product => {
+      filtered.filter(
+        product => {
 
-        const name =
-          String(product.name || "")
-            .toLowerCase();
+          const name =
+            String(
+              product.name || ""
+            ).toLowerCase();
 
-        const categoryText =
-          String(product.category || "")
-            .toLowerCase();
 
-        const description =
-          String(product.description || "")
-            .toLowerCase();
+          const categoryText =
+            String(
+              product.category || ""
+            ).toLowerCase();
 
-        return (
-          name.includes(search) ||
-          categoryText.includes(search) ||
-          description.includes(search)
-        );
 
-      });
+          const description =
+            String(
+              product.description || ""
+            ).toLowerCase();
+
+
+          return (
+            name.includes(search) ||
+            categoryText.includes(search) ||
+            description.includes(search)
+          );
+
+        }
+      );
 
   }
 
@@ -388,7 +455,10 @@ function applyFilters() {
       : "default";
 
 
-  if (sort === "price-low") {
+  if (
+    sort ===
+    "price-low"
+  ) {
 
     filtered.sort(
       (a, b) =>
@@ -399,7 +469,10 @@ function applyFilters() {
   }
 
 
-  if (sort === "price-high") {
+  if (
+    sort ===
+    "price-high"
+  ) {
 
     filtered.sort(
       (a, b) =>
@@ -410,7 +483,10 @@ function applyFilters() {
   }
 
 
-  if (sort === "name") {
+  if (
+    sort ===
+    "name"
+  ) {
 
     filtered.sort(
       (a, b) =>
@@ -424,7 +500,9 @@ function applyFilters() {
   }
 
 
-  renderProducts(filtered);
+  renderProducts(
+    filtered
+  );
 
 }
 
@@ -435,7 +513,8 @@ function applyFilters() {
 
 function renderProducts(list) {
 
-  productGrid.innerHTML = "";
+  productGrid.innerHTML =
+    "";
 
 
   resultsCount.textContent =
@@ -446,7 +525,9 @@ function renderProducts(list) {
     }`;
 
 
-  if (list.length === 0) {
+  if (
+    list.length === 0
+  ) {
 
     noResults.style.display =
       "block";
@@ -460,120 +541,157 @@ function renderProducts(list) {
     "none";
 
 
-  list.forEach(product => {
+  list.forEach(
+    product => {
 
-    const card =
-      document.createElement("article");
-
-    card.className =
-      "product-card";
-
-
-    const image =
-      getProductImage(product);
+      const card =
+        document.createElement(
+          "article"
+        );
 
 
-    const price =
-      Number(product.price) || 0;
+      card.className =
+        "product-card";
 
 
-    const transferPrice =
-      Number(product.transfer_price) || 0;
+      const image =
+        getProductImage(
+          product
+        );
 
 
-    const discount =
-      Number(product.discount) || 0;
+      const price =
+        Number(
+          product.price
+        ) || 0;
 
 
-    card.innerHTML = `
-
-      <div class="product-image">
-
-        <img
-          src="${escapeHTML(image)}"
-          alt="${escapeHTML(product.name || "Producto")}"
-          loading="lazy"
-        >
-
-        ${
-          discount > 0
-            ? `
-              <span class="discount">
-                -${discount}%
-              </span>
-            `
-            : ""
-        }
-
-      </div>
+      const transferPrice =
+        Number(
+          product.transfer_price
+        ) || 0;
 
 
-      <div class="product-info">
+      const discount =
+        Number(
+          product.discount
+        ) || 0;
 
-        <div class="product-category">
-          ${escapeHTML(
-            product.category ||
-            "Sin categoría"
-          )}
+
+      card.innerHTML = `
+
+        <div class="product-image">
+
+          <img
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(
+              product.name ||
+              "Producto"
+            )}"
+            loading="lazy"
+          >
+
+          ${
+            discount > 0
+              ? `
+                <span class="discount">
+                  -${discount}%
+                </span>
+              `
+              : ""
+          }
+
         </div>
 
 
-        <div class="product-name">
-          ${escapeHTML(
-            product.name ||
-            "Producto sin nombre"
-          )}
+        <div class="product-info">
+
+          <div class="product-category">
+
+            ${escapeHTML(
+              product.category ||
+              "Sin categoría"
+            )}
+
+          </div>
+
+
+          <div class="product-name">
+
+            ${escapeHTML(
+              product.name ||
+              "Producto sin nombre"
+            )}
+
+          </div>
+
+
+          <div class="product-description">
+
+            ${escapeHTML(
+              product.description ||
+              ""
+            )}
+
+          </div>
+
+
+          <div class="price">
+
+            ${formatPrice(
+              price
+            )}
+
+          </div>
+
+
+          ${
+            transferPrice > 0
+              ? `
+                <div class="transfer-price">
+
+                  Transferencia:
+                  ${formatPrice(
+                    transferPrice
+                  )}
+
+                </div>
+              `
+              : ""
+          }
+
+
+          <button
+            class="add-cart"
+            data-id="${product.id}"
+            type="button"
+          >
+
+            AGREGAR AL CARRITO
+
+          </button>
+
+
+          <div
+            class="view-product"
+            data-id="${product.id}"
+          >
+
+            Ver producto
+
+          </div>
+
         </div>
 
-
-        <div class="product-description">
-          ${escapeHTML(
-            product.description ||
-            ""
-          )}
-        </div>
+      `;
 
 
-        <div class="price">
-          ${formatPrice(price)}
-        </div>
+      productGrid.appendChild(
+        card
+      );
 
-
-        ${
-          transferPrice > 0
-            ? `
-              <div class="transfer-price">
-                Transferencia:
-                ${formatPrice(transferPrice)}
-              </div>
-            `
-            : ""
-        }
-
-
-        <button
-          class="add-cart"
-          data-id="${product.id}"
-        >
-          AGREGAR AL CARRITO
-        </button>
-
-
-        <div
-          class="view-product"
-          data-id="${product.id}"
-        >
-          Ver producto
-        </div>
-
-      </div>
-
-    `;
-
-
-    productGrid.appendChild(card);
-
-  });
+    }
+  );
 
 
   /* -------------------------
@@ -581,22 +699,27 @@ function renderProducts(list) {
   ------------------------- */
 
   productGrid
-    .querySelectorAll(".add-cart")
-    .forEach(button => {
+    .querySelectorAll(
+      ".add-cart"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        function() {
+        button.addEventListener(
+          "click",
+          function() {
 
-          const id =
-            this.dataset.id;
+            const id =
+              this.dataset.id;
 
-          addToCart(id);
 
-        }
-      );
+            addToCart(id);
 
-    });
+          }
+        );
+
+      }
+    );
 
 
   /* -------------------------
@@ -604,22 +727,29 @@ function renderProducts(list) {
   ------------------------- */
 
   productGrid
-    .querySelectorAll(".view-product")
-    .forEach(button => {
+    .querySelectorAll(
+      ".view-product"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        function() {
+        button.addEventListener(
+          "click",
+          function() {
 
-          const id =
-            this.dataset.id;
+            const id =
+              this.dataset.id;
 
-          openProductModal(id);
 
-        }
-      );
+            openProductModal(
+              id
+            );
 
-    });
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -632,51 +762,58 @@ document
   .querySelectorAll(
     ".category-card"
   )
-  .forEach(button => {
+  .forEach(
+    button => {
 
-    button.addEventListener(
-      "click",
-      function() {
+      button.addEventListener(
+        "click",
+        function() {
 
-        const category =
-          this.dataset.category;
-
-
-        const radio =
-          document.querySelector(
-            `input[name="category"][value="${category}"]`
-          );
+          const category =
+            this.dataset.category;
 
 
-        if (radio) {
+          const radio =
+            document.querySelector(
+              `input[name="category"][value="${category}"]`
+            );
 
-          radio.checked =
-            true;
+
+          if (radio) {
+
+            radio.checked =
+              true;
+
+          }
+
+
+          applyFilters();
+
+
+          const productsSection =
+            document.getElementById(
+              "productos"
+            );
+
+
+          if (
+            productsSection
+          ) {
+
+            productsSection.scrollIntoView(
+              {
+                behavior:
+                  "smooth"
+              }
+            );
+
+          }
 
         }
+      );
 
-
-        applyFilters();
-
-
-        const productsSection =
-          document.getElementById(
-            "productos"
-          );
-
-
-        if (productsSection) {
-
-          productsSection.scrollIntoView({
-            behavior: "smooth"
-          });
-
-        }
-
-      }
-    );
-
-  });
+    }
+  );
 
 
 /* =====================================================
@@ -687,43 +824,48 @@ document
   .querySelectorAll(
     ".nav a[data-category]"
   )
-  .forEach(link => {
+  .forEach(
+    link => {
 
-    link.addEventListener(
-      "click",
-      function(event) {
+      link.addEventListener(
+        "click",
+        function(event) {
 
-        const category =
-          this.dataset.category;
+          const category =
+            this.dataset.category;
 
 
-        if (category === "Todos") {
+          if (
+            category ===
+            "Todos"
+          ) {
 
-          event.preventDefault();
+            event.preventDefault();
+
+          }
+
+
+          const radio =
+            document.querySelector(
+              `input[name="category"][value="${category}"]`
+            );
+
+
+          if (radio) {
+
+            radio.checked =
+              true;
+
+          }
+
+
+          applyFilters();
 
         }
+      );
 
-
-        const radio =
-          document.querySelector(
-            `input[name="category"][value="${category}"]`
-          );
-
-
-        if (radio) {
-
-          radio.checked =
-            true;
-
-        }
-
-
-        applyFilters();
-
-      }
-    );
-
-  });
+    }
+  );
 
 
 /* =====================================================
@@ -734,21 +876,25 @@ document
   .querySelectorAll(
     'input[name="category"], input[name="price"]'
   )
-  .forEach(input => {
+  .forEach(
+    input => {
 
-    input.addEventListener(
-      "change",
-      applyFilters
-    );
+      input.addEventListener(
+        "change",
+        applyFilters
+      );
 
-  });
+    }
+  );
 
 
 /* =====================================================
    LIMPIAR FILTROS
 ===================================================== */
 
-if (clearFilters) {
+if (
+  clearFilters
+) {
 
   clearFilters.addEventListener(
     "click",
@@ -759,13 +905,16 @@ if (clearFilters) {
           'input[name="category"][value="Todos"]'
         );
 
+
       const allPrice =
         document.querySelector(
           'input[name="price"][value="all"]'
         );
 
 
-      if (allCategory) {
+      if (
+        allCategory
+      ) {
 
         allCategory.checked =
           true;
@@ -773,7 +922,9 @@ if (clearFilters) {
       }
 
 
-      if (allPrice) {
+      if (
+        allPrice
+      ) {
 
         allPrice.checked =
           true;
@@ -781,7 +932,9 @@ if (clearFilters) {
       }
 
 
-      if (searchInput) {
+      if (
+        searchInput
+      ) {
 
         searchInput.value =
           "";
@@ -789,7 +942,9 @@ if (clearFilters) {
       }
 
 
-      if (sortProducts) {
+      if (
+        sortProducts
+      ) {
 
         sortProducts.value =
           "default";
@@ -809,7 +964,9 @@ if (clearFilters) {
    BUSCADOR
 ===================================================== */
 
-if (searchInput) {
+if (
+  searchInput
+) {
 
   searchInput.addEventListener(
     "input",
@@ -819,7 +976,9 @@ if (searchInput) {
 }
 
 
-if (searchButton) {
+if (
+  searchButton
+) {
 
   searchButton.addEventListener(
     "click",
@@ -833,7 +992,9 @@ if (searchButton) {
    ORDEN
 ===================================================== */
 
-if (sortProducts) {
+if (
+  sortProducts
+) {
 
   sortProducts.addEventListener(
     "change",
@@ -851,11 +1012,247 @@ function saveCart() {
 
   localStorage.setItem(
     "milashes_cart",
-    JSON.stringify(cartData)
+    JSON.stringify(
+      cartData
+    )
   );
 
 }
 
+
+/* =====================================================
+   NOTIFICACIÓN DE PRODUCTO AGREGADO
+===================================================== */
+
+function showCartMessage(
+  productName
+) {
+
+  let message =
+    document.getElementById(
+      "cartMessage"
+    );
+
+
+  /* --------------------------------
+     CREAR NOTIFICACIÓN
+  -------------------------------- */
+
+  if (!message) {
+
+    message =
+      document.createElement(
+        "div"
+      );
+
+
+    message.id =
+      "cartMessage";
+
+
+    message.innerHTML = `
+
+      <div
+        style="
+          width:30px;
+          height:30px;
+          min-width:30px;
+          border-radius:50%;
+          background:#e8f7ed;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#2e9b55;
+          font-size:18px;
+          font-weight:700;
+        "
+      >
+        ✓
+      </div>
+
+
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:2px;
+          min-width:0;
+        "
+      >
+
+        <strong
+          style="
+            font-size:14px;
+            line-height:1.2;
+            color:#333;
+          "
+        >
+          Producto agregado
+        </strong>
+
+
+        <span
+          id="cartMessageProduct"
+          style="
+            font-size:12px;
+            line-height:1.3;
+            color:#777;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+            max-width:230px;
+          "
+        >
+        </span>
+
+      </div>
+
+    `;
+
+
+    /* --------------------------------
+       ESTILOS DE LA NOTIFICACIÓN
+    -------------------------------- */
+
+    message.style.position =
+      "fixed";
+
+    message.style.top =
+      "85px";
+
+    message.style.right =
+      "20px";
+
+    message.style.zIndex =
+      "999999";
+
+    message.style.display =
+      "flex";
+
+    message.style.alignItems =
+      "center";
+
+    message.style.gap =
+      "10px";
+
+    message.style.width =
+      "auto";
+
+    message.style.minWidth =
+      "250px";
+
+    message.style.maxWidth =
+      "calc(100vw - 40px)";
+
+    message.style.padding =
+      "12px 16px";
+
+    message.style.background =
+      "#ffffff";
+
+    message.style.border =
+      "1px solid rgba(0,0,0,0.08)";
+
+    message.style.borderRadius =
+      "12px";
+
+    message.style.boxShadow =
+      "0 8px 30px rgba(0,0,0,0.18)";
+
+    message.style.opacity =
+      "0";
+
+    message.style.visibility =
+      "hidden";
+
+    message.style.transform =
+      "translateY(-15px)";
+
+    message.style.transition =
+      "opacity .25s ease, transform .25s ease, visibility .25s ease";
+
+    message.style.pointerEvents =
+      "none";
+
+
+    document.body.appendChild(
+      message
+    );
+
+  }
+
+
+  /* --------------------------------
+     NOMBRE DEL PRODUCTO
+  -------------------------------- */
+
+  const productText =
+    document.getElementById(
+      "cartMessageProduct"
+    );
+
+
+  if (
+    productText
+  ) {
+
+    productText.textContent =
+      productName ||
+      "Producto";
+
+  }
+
+
+  /* --------------------------------
+     MOSTRAR
+  -------------------------------- */
+
+  message.style.visibility =
+    "visible";
+
+  message.style.opacity =
+    "1";
+
+  message.style.transform =
+    "translateY(0)";
+
+
+  /* --------------------------------
+     CANCELAR TEMPORIZADOR ANTERIOR
+  -------------------------------- */
+
+  clearTimeout(
+    window.cartMessageTimer
+  );
+
+
+  /* --------------------------------
+     OCULTAR DESPUÉS DE 2.5 SEGUNDOS
+  -------------------------------- */
+
+  window.cartMessageTimer =
+    setTimeout(
+      function() {
+
+        message.style.opacity =
+          "0";
+
+        message.style.visibility =
+          "hidden";
+
+        message.style.transform =
+          "translateY(-15px)";
+
+      },
+      2500
+    );
+
+}
+
+
+/* =====================================================
+   AGREGAR AL CARRITO
+===================================================== */
 
 function addToCart(id) {
 
@@ -888,34 +1285,60 @@ function addToCart(id) {
 
   if (existing) {
 
-    existing.quantity += 1;
+    existing.quantity +=
+      1;
 
   } else {
 
     cartData.push({
 
-      id: product.id,
+      id:
+        product.id,
 
-      name: product.name,
+      name:
+        product.name,
 
-      price: Number(product.price) || 0,
+      price:
+        Number(
+          product.price
+        ) || 0,
 
-      image: product.image || "",
+      image:
+        product.image || "",
 
-      quantity: 1
+      quantity:
+        1
 
     });
 
   }
 
 
+  /* --------------------------------
+     GUARDAR
+  -------------------------------- */
+
   saveCart();
+
+
+  /* --------------------------------
+     ACTUALIZAR CONTADOR Y CARRITO
+  -------------------------------- */
 
   updateCart();
 
 
-  openCart();
+  /* --------------------------------
+     MOSTRAR NOTIFICACIÓN
+     
+     IMPORTANTE:
+     NO ABRIR EL CARRITO.
+  -------------------------------- */
 
+  showCartMessage(
+    product.name ||
+    "Producto"
+  );
 
 }
 
@@ -928,8 +1351,14 @@ function updateCart() {
 
   const totalItems =
     cartData.reduce(
-      (total, item) =>
-        total + Number(item.quantity || 0),
+      (
+        total,
+        item
+      ) =>
+        total +
+        Number(
+          item.quantity || 0
+        ),
       0
     );
 
@@ -938,13 +1367,17 @@ function updateCart() {
     totalItems;
 
 
-  if (cartData.length === 0) {
+  if (
+    cartData.length === 0
+  ) {
 
     cartItems.innerHTML = `
 
       <div class="empty-cart">
 
-        <div>🛒</div>
+        <div>
+          🛒
+        </div>
 
         <h3>
           Tu carrito está vacío
@@ -958,8 +1391,10 @@ function updateCart() {
 
     `;
 
+
     cartTotal.textContent =
       "$0";
+
 
     return;
 
@@ -974,99 +1409,128 @@ function updateCart() {
     0;
 
 
-  cartData.forEach(item => {
+  cartData.forEach(
+    item => {
 
-    const quantity =
-      Number(item.quantity) || 1;
-
-    const price =
-      Number(item.price) || 0;
-
-    const subtotal =
-      price * quantity;
+      const quantity =
+        Number(
+          item.quantity
+        ) || 1;
 
 
-    total +=
-      subtotal;
+      const price =
+        Number(
+          item.price
+        ) || 0;
 
 
-    const element =
-      document.createElement("div");
-
-    element.className =
-      "cart-item";
+      const subtotal =
+        price *
+        quantity;
 
 
-    element.innerHTML = `
-
-      <img
-        src="${escapeHTML(
-          item.image ||
-          "https://via.placeholder.com/150?text=Producto"
-        )}"
-        alt="${escapeHTML(item.name || "")}"
-      >
+      total +=
+        subtotal;
 
 
-      <div class="cart-item-info">
-
-        <h4>
-          ${escapeHTML(
-            item.name ||
-            "Producto"
-          )}
-        </h4>
+      const element =
+        document.createElement(
+          "div"
+        );
 
 
-        <div class="cart-item-price">
-          ${formatPrice(price)}
+      element.className =
+        "cart-item";
+
+
+      element.innerHTML = `
+
+        <img
+          src="${escapeHTML(
+            item.image ||
+            "https://via.placeholder.com/150?text=Producto"
+          )}"
+          alt="${escapeHTML(
+            item.name || ""
+          )}"
+        >
+
+
+        <div
+          class="cart-item-info"
+        >
+
+          <h4>
+            ${escapeHTML(
+              item.name ||
+              "Producto"
+            )}
+          </h4>
+
+
+          <div
+            class="cart-item-price"
+          >
+            ${formatPrice(
+              price
+            )}
+          </div>
+
+
+          <div
+            class="quantity"
+          >
+
+            <button
+              class="decrease"
+              data-id="${item.id}"
+              type="button"
+            >
+              −
+            </button>
+
+
+            <span>
+              ${quantity}
+            </span>
+
+
+            <button
+              class="increase"
+              data-id="${item.id}"
+              type="button"
+            >
+              +
+            </button>
+
+
+            <button
+              class="remove-item"
+              data-id="${item.id}"
+              type="button"
+            >
+              Eliminar
+            </button>
+
+          </div>
+
         </div>
 
-
-        <div class="quantity">
-
-          <button
-            class="decrease"
-            data-id="${item.id}"
-          >
-            −
-          </button>
+      `;
 
 
-          <span>
-            ${quantity}
-          </span>
+      cartItems.appendChild(
+        element
+      );
 
-
-          <button
-            class="increase"
-            data-id="${item.id}"
-          >
-            +
-          </button>
-
-
-          <button
-            class="remove-item"
-            data-id="${item.id}"
-          >
-            Eliminar
-          </button>
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    cartItems.appendChild(element);
-
-  });
+    }
+  );
 
 
   cartTotal.textContent =
-    formatPrice(total);
+    formatPrice(
+      total
+    );
 
 
   /* -------------------------
@@ -1074,22 +1538,26 @@ function updateCart() {
   ------------------------- */
 
   cartItems
-    .querySelectorAll(".decrease")
-    .forEach(button => {
+    .querySelectorAll(
+      ".decrease"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        function() {
+        button.addEventListener(
+          "click",
+          function() {
 
-          changeQuantity(
-            this.dataset.id,
-            -1
-          );
+            changeQuantity(
+              this.dataset.id,
+              -1
+            );
 
-        }
-      );
+          }
+        );
 
-    });
+      }
+    );
 
 
   /* -------------------------
@@ -1097,22 +1565,26 @@ function updateCart() {
   ------------------------- */
 
   cartItems
-    .querySelectorAll(".increase")
-    .forEach(button => {
+    .querySelectorAll(
+      ".increase"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        function() {
+        button.addEventListener(
+          "click",
+          function() {
 
-          changeQuantity(
-            this.dataset.id,
-            1
-          );
+            changeQuantity(
+              this.dataset.id,
+              1
+            );
 
-        }
-      );
+          }
+        );
 
-    });
+      }
+    );
 
 
   /* -------------------------
@@ -1120,21 +1592,25 @@ function updateCart() {
   ------------------------- */
 
   cartItems
-    .querySelectorAll(".remove-item")
-    .forEach(button => {
+    .querySelectorAll(
+      ".remove-item"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        function() {
+        button.addEventListener(
+          "click",
+          function() {
 
-          removeFromCart(
-            this.dataset.id
-          );
+            removeFromCart(
+              this.dataset.id
+            );
 
-        }
-      );
+          }
+        );
 
-    });
+      }
+    );
 
 }
 
@@ -1143,7 +1619,10 @@ function updateCart() {
    CAMBIAR CANTIDAD
 ===================================================== */
 
-function changeQuantity(id, amount) {
+function changeQuantity(
+  id,
+  amount
+) {
 
   const item =
     cartData.find(
@@ -1153,19 +1632,25 @@ function changeQuantity(id, amount) {
     );
 
 
-  if (!item) return;
+  if (!item)
+    return;
 
 
   item.quantity +=
     amount;
 
 
-  if (item.quantity <= 0) {
+  if (
+    item.quantity <=
+    0
+  ) {
 
     cartData =
       cartData.filter(
         product =>
-          String(product.id) !==
+          String(
+            product.id
+          ) !==
           String(id)
       );
 
@@ -1183,12 +1668,16 @@ function changeQuantity(id, amount) {
    ELIMINAR DEL CARRITO
 ===================================================== */
 
-function removeFromCart(id) {
+function removeFromCart(
+  id
+) {
 
   cartData =
     cartData.filter(
       product =>
-        String(product.id) !==
+        String(
+          product.id
+        ) !==
         String(id)
     );
 
@@ -1210,6 +1699,7 @@ function openCart() {
     "active"
   );
 
+
   cartOverlay.classList.add(
     "active"
   );
@@ -1227,6 +1717,7 @@ function closeCartPanel() {
     "active"
   );
 
+
   cartOverlay.classList.remove(
     "active"
   );
@@ -1234,7 +1725,9 @@ function closeCartPanel() {
 }
 
 
-if (cartButton) {
+if (
+  cartButton
+) {
 
   cartButton.addEventListener(
     "click",
@@ -1244,7 +1737,9 @@ if (cartButton) {
 }
 
 
-if (closeCart) {
+if (
+  closeCart
+) {
 
   closeCart.addEventListener(
     "click",
@@ -1254,7 +1749,9 @@ if (closeCart) {
 }
 
 
-if (cartOverlay) {
+if (
+  cartOverlay
+) {
 
   cartOverlay.addEventListener(
     "click",
@@ -1264,7 +1761,9 @@ if (cartOverlay) {
 }
 
 
-if (continueShopping) {
+if (
+  continueShopping
+) {
 
   continueShopping.addEventListener(
     "click",
@@ -1278,7 +1777,9 @@ if (continueShopping) {
    MODAL PRODUCTO
 ===================================================== */
 
-function openProductModal(id) {
+function openProductModal(
+  id
+) {
 
   const product =
     products.find(
@@ -1288,19 +1789,26 @@ function openProductModal(id) {
     );
 
 
-  if (!product) return;
+  if (!product)
+    return;
 
 
   const image =
-    getProductImage(product);
+    getProductImage(
+      product
+    );
 
 
   const price =
-    Number(product.price) || 0;
+    Number(
+      product.price
+    ) || 0;
 
 
   const transferPrice =
-    Number(product.transfer_price) || 0;
+    Number(
+      product.transfer_price
+    ) || 0;
 
 
   modalContent.innerHTML = `
@@ -1312,16 +1820,21 @@ function openProductModal(id) {
         <img
           src="${escapeHTML(image)}"
           alt="${escapeHTML(
-            product.name || "Producto"
+            product.name ||
+            "Producto"
           )}"
         >
 
       </div>
 
 
-      <div class="modal-info">
+      <div
+        class="modal-info"
+      >
 
-        <div class="product-category">
+        <div
+          class="product-category"
+        >
 
           ${escapeHTML(
             product.category ||
@@ -1351,9 +1864,13 @@ function openProductModal(id) {
         </p>
 
 
-        <div class="modal-price">
+        <div
+          class="modal-price"
+        >
 
-          ${formatPrice(price)}
+          ${formatPrice(
+            price
+          )}
 
         </div>
 
@@ -1361,10 +1878,14 @@ function openProductModal(id) {
         ${
           transferPrice > 0
             ? `
-              <div class="transfer-price">
+              <div
+                class="transfer-price"
+              >
 
                 Precio transferencia:
-                ${formatPrice(transferPrice)}
+                ${formatPrice(
+                  transferPrice
+                )}
 
               </div>
             `
@@ -1375,8 +1896,11 @@ function openProductModal(id) {
         <button
           class="add-cart"
           id="modalAddCart"
+          type="button"
         >
+
           AGREGAR AL CARRITO
+
         </button>
 
       </div>
@@ -1397,13 +1921,17 @@ function openProductModal(id) {
     );
 
 
-  if (modalAddCart) {
+  if (
+    modalAddCart
+  ) {
 
     modalAddCart.addEventListener(
       "click",
       function() {
 
-        addToCart(product.id);
+        addToCart(
+          product.id
+        );
 
       }
     );
@@ -1426,7 +1954,9 @@ function closeProductModal() {
 }
 
 
-if (closeModal) {
+if (
+  closeModal
+) {
 
   closeModal.addEventListener(
     "click",
@@ -1436,7 +1966,9 @@ if (closeModal) {
 }
 
 
-if (productModal) {
+if (
+  productModal
+) {
 
   productModal.addEventListener(
     "click",
@@ -1466,7 +1998,8 @@ document.addEventListener(
   function(event) {
 
     if (
-      event.key === "Escape"
+      event.key ===
+      "Escape"
     ) {
 
       closeProductModal();
@@ -1483,13 +2016,18 @@ document.addEventListener(
    CHECKOUT WHATSAPP
 ===================================================== */
 
-if (checkoutButton) {
+if (
+  checkoutButton
+) {
 
   checkoutButton.addEventListener(
     "click",
     function() {
 
-      if (cartData.length === 0) {
+      if (
+        cartData.length ===
+        0
+      ) {
 
         alert(
           "Tu carrito está vacío."
@@ -1508,26 +2046,35 @@ if (checkoutButton) {
         0;
 
 
-      cartData.forEach(item => {
+      cartData.forEach(
+        item => {
 
-        const quantity =
-          Number(item.quantity) || 1;
-
-        const price =
-          Number(item.price) || 0;
-
-        const subtotal =
-          quantity * price;
+          const quantity =
+            Number(
+              item.quantity
+            ) || 1;
 
 
-        total +=
-          subtotal;
+          const price =
+            Number(
+              item.price
+            ) || 0;
 
 
-        message +=
-          `• ${item.name} x${quantity} - ${formatPrice(subtotal)}%0A`;
+          const subtotal =
+            quantity *
+            price;
 
-      });
+
+          total +=
+            subtotal;
+
+
+          message +=
+            `• ${item.name} x${quantity} - ${formatPrice(subtotal)}%0A`;
+
+        }
+      );
 
 
       message +=
@@ -1553,7 +2100,9 @@ if (checkoutButton) {
    WHATSAPP CONTACTO
 ===================================================== */
 
-if (whatsappContact) {
+if (
+  whatsappContact
+) {
 
   whatsappContact.href =
     `https://wa.me/${WHATSAPP_NUMBER}`;
@@ -1568,7 +2117,9 @@ if (whatsappContact) {
    MENÚ MOBILE
 ===================================================== */
 
-if (mobileMenu) {
+if (
+  mobileMenu
+) {
 
   mobileMenu.addEventListener(
     "click",
@@ -1589,21 +2140,25 @@ if (mobileMenu) {
 ===================================================== */
 
 document
-  .querySelectorAll(".nav a")
-  .forEach(link => {
+  .querySelectorAll(
+    ".nav a"
+  )
+  .forEach(
+    link => {
 
-    link.addEventListener(
-      "click",
-      function() {
+      link.addEventListener(
+        "click",
+        function() {
 
-        nav.classList.remove(
-          "active"
-        );
+          nav.classList.remove(
+            "active"
+          );
 
-      }
-    );
+        }
+      );
 
-  });
+    }
+  );
 
 
 /* =====================================================
@@ -1617,9 +2172,8 @@ loadProducts();
 
 /* =====================================================
    RECARGAR PRODUCTOS AUTOMÁTICAMENTE
+
    Cada 30 segundos consulta Supabase.
-   Así los productos nuevos aparecen sin
-   tener que modificar el código.
 ===================================================== */
 
 setInterval(
