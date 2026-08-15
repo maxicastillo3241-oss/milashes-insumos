@@ -96,6 +96,9 @@ const productPrice =
 const productTransferPrice =
   document.getElementById("productTransferPrice");
 
+const productStock =
+  document.getElementById("productStock");
+
 const productDiscount =
   document.getElementById("productDiscount");
 
@@ -450,6 +453,10 @@ function renderProducts() {
             : `<span class="status-inactive">● INACTIVO</span>`
         }
 
+        <div style="margin-top:5px;font-size:10px;color:#777;font-weight:600;">
+          STOCK: ${Math.max(0, Number(product.stock) || 0)}
+        </div>
+
       </div>
 
       <div class="product-actions">
@@ -576,6 +583,8 @@ function openNewProduct() {
 
   productDiscount.value = "0";
 
+  productStock.value = "0";
+
   productActive.checked = true;
 
   modalTitle.textContent =
@@ -635,6 +644,10 @@ function editProduct(id) {
     product.discount || 0;
 
 
+  productStock.value =
+    Math.max(0, Number(product.stock) || 0);
+
+
   productImage.value =
     product.image || "";
 
@@ -691,6 +704,9 @@ productForm.addEventListener(
 
       discount:
         Number(productDiscount.value || 0),
+
+      stock:
+        Math.max(0, Math.floor(Number(productStock.value) || 0)),
 
       image:
         productImage.value.trim(),
