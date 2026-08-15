@@ -131,9 +131,11 @@ function renderFeaturedProducts() {
        ...
        10 1 2 3 4
   */
+  const isMobile = window.matchMedia("(max-width: 750px)").matches;
+  const visibleCount = isMobile ? 2 : 5;
   const displayProducts = [
     ...featuredProducts,
-    ...featuredProducts.slice(0, 4)
+    ...featuredProducts.slice(0, visibleCount - 1)
   ];
 
   featuredGrid.innerHTML = `
@@ -191,7 +193,7 @@ function renderFeaturedProducts() {
      Cada tarjeta ocupa 1/14 del track = 20% de la ventana.
      Por eso cada paso mueve exactamente una tarjeta.
   */
-  track.style.width = `${displayProducts.length * 20}%`;
+  track.style.width = `${displayProducts.length * (100 / visibleCount)}%`;
   track.style.transform = `translateX(-${featuredPage * (100 / displayProducts.length)}%)`;
 
   track.querySelectorAll(".add-cart").forEach(button => {
@@ -211,6 +213,35 @@ function renderFeaturedProducts() {
     featuredPage = (featuredPage + 1) % total;
     renderFeaturedProducts();
   });
+
+  if (isMobile) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const windowEl = featuredGrid.querySelector(".featured-window");
+
+    windowEl.addEventListener("touchstart", event => {
+      const touch = event.changedTouches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    }, { passive: true });
+
+    windowEl.addEventListener("touchend", event => {
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+
+      if (dx < 0) {
+        featuredPage = (featuredPage + 1) % total;
+      } else {
+        featuredPage = (featuredPage - 1 + total) % total;
+      }
+
+      renderFeaturedProducts();
+    }, { passive: true });
+  }
 }
 
 async function loadProducts() {
