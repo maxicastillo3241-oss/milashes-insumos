@@ -20,7 +20,7 @@
 
 </head>
 
-<body>
+<body class="offers-page">
 
 
   <div class="topbar">
@@ -146,7 +146,7 @@
     </div>
 
 
-    <div class="shop-layout">
+    <div class="shop-layout offers-layout">
 
       <section class="products-container">
 
@@ -160,7 +160,7 @@
 
 
         <div
-          class="product-grid"
+          class="product-grid offers-grid"
           id="productGrid"
         ></div>
 
@@ -305,41 +305,14 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script src="script.js"></script>
-
   <script>
-
-    /*
-      OFERTAS
-
-      Después de cargar los productos,
-      mostramos únicamente aquellos
-      que tengan discount mayor a 0.
-    */
-
-    const ofertasOriginal =
-      window.setInterval(function () {
-
-        if (
-          typeof products !== "undefined" &&
-          products.length > 0
-        ) {
-
-          clearInterval(ofertasOriginal);
-
-          const ofertas =
-            products.filter(
-              product =>
-                Number(product.discount || 0) > 0
-            );
-
-          renderProducts(ofertas);
-
-        }
-
-      }, 100);
-
+    // Esta página usa las mismas tarjetas normales de la tienda.
+    // Solo carga los productos marcados como "Mostrar en Ofertas"
+    // desde el panel de administración.
+    window.offersOnly = true;
   </script>
+
+  <script src="script.js"></script>
 
 </body>
 

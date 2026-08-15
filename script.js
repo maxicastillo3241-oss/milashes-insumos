@@ -11,6 +11,7 @@ const SUPABASE_KEY = "sb_publishable_BnnKBE7o9TJHWA-12CmVIw_vv3M5HJi";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const productGrid = document.getElementById("productGrid");
+const featuredGrid = document.getElementById("featuredGrid");
 const resultsCount = document.getElementById("resultsCount");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
@@ -70,6 +71,148 @@ function saveCart() {
   localStorage.setItem("milashes_cart", JSON.stringify(cartData));
 }
 
+let featuredPage = 0;
+let featuredProducts = [];
+
+async function loadFeaturedProducts() {
+  if (!featuredGrid) return;
+
+  featuredGrid.innerHTML = `
+    <div class="featured-loading">Cargando destacados...</div>
+  `;
+
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .order("sales_count", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(10);
+
+  if (error) {
+    console.error("Error cargando destacados:", error);
+    featuredGrid.innerHTML = `
+      <div class="featured-loading">
+        No se pudieron cargar los destacados.
+      </div>
+    `;
+    return;
+  }
+
+  featuredProducts = (data || [])
+    .filter(product => product.active !== false)
+    .slice(0, 10);
+
+  featuredPage = 0;
+  renderFeaturedProducts();
+}
+
+function renderFeaturedProducts() {
+  if (!featuredGrid) return;
+
+  if (!featuredProducts.length) {
+    featuredGrid.innerHTML = `
+      <div class="featured-loading">
+        Todavía no hay productos destacados.
+      </div>
+    `;
+    return;
+  }
+
+  const total = featuredProducts.length;
+  featuredPage = ((featuredPage % total) + total) % total;
+
+  /*
+     Mostramos 5 a la vez, pero movemos el carrusel de a 1.
+     Se agregan 4 copias al final para que el recorrido sea circular.
+     Ejemplo:
+       1 2 3 4 5
+       2 3 4 5 6
+       3 4 5 6 7
+       ...
+       10 1 2 3 4
+  */
+  const displayProducts = [
+    ...featuredProducts,
+    ...featuredProducts.slice(0, 4)
+  ];
+
+  featuredGrid.innerHTML = `
+    <div class="featured-carousel">
+      <button class="featured-arrow" id="featuredPrev" type="button" aria-label="Anterior">←</button>
+
+      <div class="featured-window">
+        <div class="featured-track"></div>
+      </div>
+
+      <button class="featured-arrow" id="featuredNext" type="button" aria-label="Siguiente">→</button>
+    </div>
+  `;
+
+  const track = featuredGrid.querySelector(".featured-track");
+
+  displayProducts.forEach(product => {
+    const card = document.createElement("article");
+    card.className = "product-card featured-card";
+
+    const stock = getStock(product);
+    const cartQty = getCartQuantity(product.id);
+    const available = Math.max(0, stock - cartQty);
+    const price = Number(product.price) || 0;
+    const transferPrice = Number(product.transfer_price) || 0;
+    const discount = Number(product.discount) || 0;
+
+    card.innerHTML = `
+      <div class="product-image">
+        <img src="${escapeHTML(getProductImage(product))}" alt="${escapeHTML(product.name || "Producto")}" loading="lazy">
+        ${discount > 0 ? `<span class="discount">-${discount}%</span>` : ""}
+      </div>
+
+      <div class="product-info">
+        <div class="product-category">${escapeHTML(product.category || "Sin categoría")}</div>
+        <div class="product-name">${escapeHTML(product.name || "Producto sin nombre")}</div>
+        <div class="product-description">${escapeHTML(product.description || "")}</div>
+        <div class="price">${formatPrice(price)}</div>
+        ${transferPrice > 0 ? `<div class="transfer-price">Transferencia: ${formatPrice(transferPrice)}</div>` : ""}
+
+        <button class="add-cart" data-id="${product.id}" type="button" ${available <= 0 ? "disabled" : ""}>
+          ${available <= 0 ? "SIN STOCK" : "AGREGAR AL CARRITO"}
+        </button>
+
+        <div class="view-product" data-id="${product.id}">Ver producto</div>
+      </div>
+    `;
+
+    track.appendChild(card);
+  });
+
+  /*
+     Hay 14 tarjetas en el track (10 reales + 4 copias).
+     El track ocupa 280% del ancho de la ventana.
+     Cada tarjeta ocupa 1/14 del track = 20% de la ventana.
+     Por eso cada paso mueve exactamente una tarjeta.
+  */
+  track.style.width = `${displayProducts.length * 20}%`;
+  track.style.transform = `translateX(-${featuredPage * (100 / displayProducts.length)}%)`;
+
+  track.querySelectorAll(".add-cart").forEach(button => {
+    button.addEventListener("click", () => addToCart(button.dataset.id));
+  });
+
+  track.querySelectorAll(".view-product").forEach(button => {
+    button.addEventListener("click", () => openProductModal(button.dataset.id));
+  });
+
+  featuredGrid.querySelector("#featuredPrev").addEventListener("click", () => {
+    featuredPage = (featuredPage - 1 + total) % total;
+    renderFeaturedProducts();
+  });
+
+  featuredGrid.querySelector("#featuredNext").addEventListener("click", () => {
+    featuredPage = (featuredPage + 1) % total;
+    renderFeaturedProducts();
+  });
+}
+
 async function loadProducts() {
   productGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#777;font-size:12px;">Cargando productos...</div>`;
   if (noResults) noResults.style.display = "none";
@@ -84,6 +227,17 @@ async function loadProducts() {
   }
 
   products = data || [];
+
+  // En la página de Ofertas solo mostramos los productos
+  // marcados desde el administrador como "Mostrar en Ofertas".
+  // El descuento es independiente y no activa la sección por sí solo.
+  if (window.offersOnly) {
+    products = products.filter(product =>
+      product.is_offer === true || product.is_offer === "true"
+    );
+  }
+
+  renderFeaturedProducts();
 
   /* Si el stock cambió mientras había un carrito guardado, nunca dejamos
      que el carrito conserve una cantidad superior al stock actual. */
@@ -326,6 +480,7 @@ function applyCategoryFromURL(){const params=new URLSearchParams(window.location
 
 updateCart();
 loadProducts();
+loadFeaturedProducts();
 setInterval(loadProducts,300000);
 setTimeout(applyCategoryFromURL,500);
 window.addEventListener("scroll",function(){if(window.scrollY>50)document.body.classList.add("header-scrolled");else document.body.classList.remove("header-scrolled");});

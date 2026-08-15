@@ -111,6 +111,12 @@ const productDescription =
 const productActive =
   document.getElementById("productActive");
 
+const productOffer =
+  document.getElementById("productOffer");
+
+const catalogTabs =
+  document.getElementById("catalogTabs");
+
 const formMessage =
   document.getElementById("formMessage");
 
@@ -125,6 +131,8 @@ const toast =
 let products = [];
 
 let editingProductId = null;
+
+let catalogView = "all";
 
 
 /* =====================================================
@@ -362,6 +370,36 @@ function renderProducts() {
     [...products];
 
 
+  if (catalogView === "offers") {
+
+    filtered = filtered.filter(product =>
+      product.is_offer === true
+    );
+
+  }
+
+
+  if (catalogView === "featured") {
+
+    // Destacados = los 10 productos activos con más ventas.
+    // No depende de marcar featured manualmente.
+    filtered = filtered
+      .filter(product => product.active !== false)
+      .sort((a, b) => {
+        const salesA = Number(a.sales_count) || 0;
+        const salesB = Number(b.sales_count) || 0;
+
+        if (salesB !== salesA) {
+          return salesB - salesA;
+        }
+
+        return Number(b.id) - Number(a.id);
+      })
+      .slice(0, 10);
+
+  }
+
+
   if (search) {
 
     filtered =
@@ -455,6 +493,14 @@ function renderProducts() {
 
         <div style="margin-top:5px;font-size:10px;color:#777;font-weight:600;">
           STOCK: ${Math.max(0, Number(product.stock) || 0)}
+        </div>
+        <div style="margin-top:4px;font-size:10px;color:#777;font-weight:600;">
+          VENDIDOS: ${Math.max(0, Number(product.sales_count) || 0)}
+        </div>
+
+        <div class="product-tags">
+          ${product.is_offer ? '<span class="admin-tag offer">OFERTA</span>' : ''}
+          ${product.featured ? '<span class="admin-tag featured">DESTACADO</span>' : ''}
         </div>
 
       </div>
@@ -644,6 +690,10 @@ function editProduct(id) {
     product.discount || 0;
 
 
+  productOffer.checked =
+    product.is_offer === true;
+
+
   productStock.value =
     Math.max(0, Number(product.stock) || 0);
 
@@ -704,6 +754,9 @@ productForm.addEventListener(
 
       discount:
         Number(productDiscount.value || 0),
+
+      is_offer:
+        productOffer.checked,
 
       stock:
         Math.max(0, Math.floor(Number(productStock.value) || 0)),
@@ -884,6 +937,33 @@ productModal.addEventListener(
 
   }
 );
+
+
+/* =====================================================
+   APARTADOS OFERTAS / DESTACADOS
+===================================================== */
+
+if (catalogTabs) {
+
+  catalogTabs.querySelectorAll(".catalog-tab").forEach(button => {
+
+    button.addEventListener("click", function() {
+
+      catalogView = this.dataset.view || "all";
+
+      catalogTabs.querySelectorAll(".catalog-tab").forEach(tab => {
+        tab.classList.remove("active");
+      });
+
+      this.classList.add("active");
+
+      renderProducts();
+
+    });
+
+  });
+
+}
 
 
 /* =====================================================

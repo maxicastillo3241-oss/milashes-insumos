@@ -12,6 +12,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="admin.css">
+
+  <style>
+    .catalog-heading { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+    .catalog-tabs { display:flex; gap:6px; }
+    .catalog-tab { border:1px solid #e9e1e4; background:#fff; padding:8px 12px; font-size:9px; font-weight:700; letter-spacing:.6px; cursor:pointer; }
+    .catalog-tab.active { background:#292327; color:#fff; border-color:#292327; }
+    .product-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:6px; }
+    .admin-tag { display:inline-block; padding:3px 6px; font-size:8px; font-weight:700; letter-spacing:.5px; }
+    .admin-tag.offer { background:#f9edf1; color:#b86683; }
+    .admin-tag.featured { background:#292327; color:#fff; }
+    .checkbox-group { display:flex; flex-direction:column; gap:10px; }
+  </style>
 </head>
 
 <body>
@@ -164,7 +176,14 @@
 
         <div class="products-admin-header">
 
-          <h2>Catálogo</h2>
+          <div class="catalog-heading">
+            <h2>Catálogo</h2>
+            <div class="catalog-tabs" id="catalogTabs">
+              <button type="button" class="catalog-tab active" data-view="all">Todos</button>
+              <button type="button" class="catalog-tab" data-view="offers">Ofertas</button>
+              <button type="button" class="catalog-tab" data-view="featured">Destacados</button>
+            </div>
+          </div>
 
           <input
             type="search"
@@ -377,6 +396,17 @@
 
 
             <div class="form-group checkbox-group full">
+
+              <label>
+
+                <input
+                  type="checkbox"
+                  id="productOffer"
+                >
+
+                Mostrar en Ofertas
+
+              </label>
 
               <label>
 

@@ -1371,6 +1371,105 @@ footer > p {
 }
 
 
+
+/* =====================================================
+   PÁGINA OFERTAS
+   El layout original reserva una columna de filtros.
+   En ofertas no hay filtros, por eso debe ocupar todo el ancho.
+===================================================== */
+
+.offers-page .shop-layout {
+  display: block;
+  width: 100%;
+}
+
+.offers-page .products-container {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =====================================================
+   OFERTAS - TARJETAS CUADRADAS Y 5 POR FILA
+===================================================== */
+
+.offers-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.offers-grid .product-card {
+  min-width: 0;
+  width: 100%;
+  border-radius: 0;
+}
+
+.offers-grid .product-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f7f3f3;
+}
+
+.offers-grid .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.offers-grid .product-info {
+  padding: 13px;
+}
+
+.offers-grid .product-name {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.offers-grid .price {
+  font-size: 17px;
+}
+
+.offers-grid .transfer-price {
+  font-size: 10px;
+}
+
+.offers-grid .product-description {
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+@media (max-width: 1100px) {
+  .offers-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .offers-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .offers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .offers-grid .product-info {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* =====================================================
    RESPONSIVE - TABLET
    ===================================================== */
@@ -1797,4 +1896,305 @@ body.header-scrolled .nav a::after {
     transform: scale(.85);
   }
 
+}
+
+/* =====================================================
+   DESTACADOS EN INICIO
+===================================================== */
+
+.featured-home {
+  padding: 90px 6%;
+  background: #fffaf8;
+}
+
+#featuredGrid {
+  width: 100%;
+}
+
+.featured-carousel {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.featured-window {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.featured-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform .35s ease;
+  will-change: transform;
+}
+
+.featured-track .product-card {
+  flex: 0 0 7.142857%;
+  width: 7.142857%;
+  max-width: none;
+  margin: 0;
+  padding-left: 7px;
+  padding-right: 7px;
+  box-sizing: border-box;
+}
+
+.featured-track .product-image {
+  height: 300px;
+}
+
+.featured-track .product-image img {
+  object-fit: contain;
+}
+
+.featured-arrow {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 1px solid #e9e1e4;
+  background: #fff;
+  color: #292327;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.featured-arrow:hover {
+  background: var(--pink);
+  color: #fff;
+  border-color: var(--pink);
+}
+
+.featured-loading {
+  width: 100%;
+  text-align: center;
+  padding: 40px 20px;
+  color: #777;
+  font-size: 12px;
+}
+
+@media (max-width: 750px) {
+  .featured-home {
+    padding: 65px 5%;
+  }
+
+  .featured-carousel {
+    gap: 8px;
+  }
+
+  .featured-arrow {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    font-size: 18px;
+  }
+
+  .featured-track .product-card {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .featured-track .product-image {
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-track .product-image {
+    height: 250px;
+  }
+}
+
+
+/* =====================================================
+   OFERTAS - DISEÑO FINAL
+   5 PRODUCTOS POR FILA / TARJETAS CUADRADAS
+===================================================== */
+
+.offers-layout {
+  display: block !important;
+  width: 100% !important;
+}
+
+.offers-layout .products-container {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.offers-grid {
+  display: grid !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 22px !important;
+  align-items: start;
+}
+
+.offers-grid .product-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #f0e9eb;
+  box-sizing: border-box;
+}
+
+.offers-grid .product-image {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden;
+  background: #f7f3f3;
+}
+
+.offers-grid .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: contain !important;
+  object-position: center;
+}
+
+.offers-grid .product-info {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px !important;
+}
+
+.offers-grid .product-name {
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  min-height: 36px;
+}
+
+.offers-grid .product-description {
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+  min-height: 32px;
+}
+
+.offers-grid .price {
+  font-size: 18px !important;
+  margin: 13px 0 5px !important;
+}
+
+.offers-grid .transfer-price {
+  font-size: 9px !important;
+}
+
+.offers-grid .add-cart {
+  width: 100% !important;
+  height: 40px;
+}
+
+@media (max-width: 1100px) {
+  .offers-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .offers-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 15px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .offers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .offers-grid .product-info {
+    padding: 11px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .offers-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* =====================================================
+   PRODUCTOS - MISMO TAMAÑO VISUAL QUE OFERTAS
+   5 POR FILA / TARJETAS CUADRADAS
+===================================================== */
+
+.products-section .shop-layout > .products-container {
+  min-width: 0;
+}
+
+.products-section .product-grid {
+  display: grid !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  align-items: start;
+}
+
+.products-section .product-grid .product-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+.products-section .product-grid .product-image {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden;
+  background: #f7f3f3;
+}
+
+.products-section .product-grid .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: contain !important;
+  object-position: center;
+}
+
+.products-section .product-grid .product-info {
+  padding: 14px;
+}
+
+@media (max-width: 1200px) {
+  .products-section .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1000px) {
+  .products-section .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .products-section .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .products-section .product-grid .product-info {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .products-section .product-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
