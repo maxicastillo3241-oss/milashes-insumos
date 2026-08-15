@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="MILASHES INSUMOS - Productos profesionales"
+  >
+
+  <title>Productos | MILASHES INSUMOS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+  <div class="topbar">
+
+    <div>🚚 Envíos a todo el país</div>
+    <div>💳 Consultá nuestros medios de pago</div>
+    <div>📲 Atención por WhatsApp</div>
+
+  </div>
+
+
+  <header class="header">
+
+    <button
+      class="mobile-menu"
+      id="mobileMenu"
+      type="button"
+    >
+      ☰
+    </button>
+
+
+    <a href="index.html" class="logo">
+
+      <span>
+        MILASHES
+      </span>
+
+      <small>
+        INSUMOS PROFESIONALES
+      </small>
+
+    </a>
+
+
+    <div class="search">
+
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="¿Qué estás buscando?"
+        autocomplete="off"
+      >
+
+      <button
+        id="searchButton"
+        type="button"
+      >
+        🔍
+      </button>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <button
+        class="account-btn"
+        type="button"
+      >
+        👤
+      </button>
+
+      <button
+        class="cart-button"
+        id="cartButton"
+        type="button"
+      >
+
+        🛒
+
+        <span
+          class="cart-count"
+          id="cartCount"
+        >
+          0
+        </span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <nav class="nav" id="nav">
+
+    <a href="index.html">
+      INICIO
+    </a>
+
+    <a href="productos.html">
+      PRODUCTOS
+    </a>
+
+    <a href="ofertas.html">
+      OFERTAS
+    </a>
+
+    <a href="contacto.html">
+      CONTACTO
+    </a>
+
+  </nav>
+
+
+  <main
+    class="products-section"
+    id="productos"
+  >
+
+    <div class="products-heading">
+
+      <div>
+
+        <span class="section-label">
+          NUESTRO CATÁLOGO
+        </span>
+
+        <h2>
+          Todos los productos
+        </h2>
+
+      </div>
+
+
+      <select id="sortProducts">
+
+        <option value="default">
+          Ordenar por
+        </option>
+
+        <option value="price-low">
+          Precio: menor a mayor
+        </option>
+
+        <option value="price-high">
+          Precio: mayor a menor
+        </option>
+
+        <option value="name">
+          Nombre A-Z
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="shop-layout">
+
+
+      <aside
+        class="filters"
+        id="filters"
+      >
+
+        <div class="filter-title">
+
+          <h3>
+            Filtrar productos
+          </h3>
+
+          <button
+            id="clearFilters"
+            type="button"
+          >
+            Limpiar
+          </button>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <h4>
+            Categoría
+          </h4>
+
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Todos"
+              checked
+            >
+            Todos
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Pestañas"
+            >
+            Pestañas
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Adhesivos"
+            >
+            Adhesivos
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Pinzas"
+            >
+            Pinzas
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Accesorios"
+            >
+            Accesorios
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Kits"
+            >
+            Kits
+          </label>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <h4>
+            Precio
+          </h4>
+
+
+          <label>
+            <input
+              type="radio"
+              name="price"
+              value="all"
+              checked
+            >
+            Todos
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="price"
+              value="under10000"
+            >
+            Hasta $10.000
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="price"
+              value="10000-20000"
+            >
+            $10.000 - $20.000
+          </label>
+
+
+          <label>
+            <input
+              type="radio"
+              name="price"
+              value="over20000"
+            >
+            Más de $20.000
+          </label>
+
+        </div>
+
+      </aside>
+
+
+      <section class="products-container">
+
+        <div class="results-info">
+
+          <span id="resultsCount">
+            Cargando productos...
+          </span>
+
+        </div>
+
+
+        <div
+          class="product-grid"
+          id="productGrid"
+        ></div>
+
+
+        <div
+          class="no-results"
+          id="noResults"
+        >
+
+          <div>
+            🔎
+          </div>
+
+          <h3>
+            No encontramos productos
+          </h3>
+
+          <p>
+            Probá modificando la búsqueda o los filtros.
+          </p>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <footer>
+
+    <div class="footer-logo">
+
+      <span>
+        MILASHES
+      </span>
+
+      <small>
+        INSUMOS
+      </small>
+
+    </div>
+
+    <p>
+      Insumos profesionales para extensiones de pestañas.
+    </p>
+
+    <div class="footer-links">
+
+      <a href="index.html">
+        Inicio
+      </a>
+
+      <a href="productos.html">
+        Productos
+      </a>
+
+      <a href="ofertas.html">
+        Ofertas
+      </a>
+
+      <a href="contacto.html">
+        Contacto
+      </a>
+
+    </div>
+
+    <div class="copyright">
+      © 2026 MILASHES INSUMOS. Todos los derechos reservados.
+    </div>
+
+  </footer>
+
+
+  <!-- CARRITO -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+  ></div>
+
+  <aside
+    class="cart"
+    id="cart"
+  >
+
+    <div class="cart-header">
+
+      <h2>
+        Mi carrito
+      </h2>
+
+      <button
+        id="closeCart"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="cart-items"
+      id="cartItems"
+    ></div>
+
+    <div class="cart-footer">
+
+      <div class="cart-subtotal">
+
+        <span>
+          Subtotal
+        </span>
+
+        <strong id="cartTotal">
+          $0
+        </strong>
+
+      </div>
+
+      <button
+        class="checkout-button"
+        id="checkoutButton"
+        type="button"
+      >
+        FINALIZAR PEDIDO
+      </button>
+
+      <button
+        class="continue-button"
+        id="continueShopping"
+        type="button"
+      >
+        Seguir comprando
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MODAL -->
+
+  <div
+    class="modal-overlay"
+    id="productModal"
+  >
+
+    <div class="product-modal">
+
+      <button
+        class="modal-close"
+        id="closeModal"
+        type="button"
+      >
+        ×
+      </button>
+
+      <div id="modalContent"></div>
+
+    </div>
+
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>

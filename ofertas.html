@@ -2,15 +2,11 @@
 <html lang="es">
 
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="description"
-    content="MILASHES INSUMOS - Insumos profesionales para extensiones de pestañas"
-  >
-
-  <title>MILASHES INSUMOS</title>
+  <title>Ofertas | MILASHES INSUMOS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,14 +17,18 @@
   >
 
   <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
+
   <div class="topbar">
+
     <div>🚚 Envíos a todo el país</div>
     <div>💳 Consultá nuestros medios de pago</div>
     <div>📲 Atención por WhatsApp</div>
+
   </div>
 
 
@@ -38,17 +38,26 @@
       class="mobile-menu"
       id="mobileMenu"
       type="button"
-      aria-label="Abrir menú"
     >
       ☰
     </button>
 
+
     <a href="index.html" class="logo">
-      <span>MILASHES</span>
-      <small>INSUMOS PROFESIONALES</small>
+
+      <span>
+        MILASHES
+      </span>
+
+      <small>
+        INSUMOS PROFESIONALES
+      </small>
+
     </a>
 
+
     <div class="search">
+
       <input
         type="search"
         id="searchInput"
@@ -59,18 +68,18 @@
       <button
         id="searchButton"
         type="button"
-        aria-label="Buscar"
       >
         🔍
       </button>
+
     </div>
+
 
     <div class="header-actions">
 
       <button
         class="account-btn"
         type="button"
-        title="Mi cuenta"
       >
         👤
       </button>
@@ -79,10 +88,17 @@
         class="cart-button"
         id="cartButton"
         type="button"
-        aria-label="Abrir carrito"
       >
+
         🛒
-        <span class="cart-count" id="cartCount">0</span>
+
+        <span
+          class="cart-count"
+          id="cartCount"
+        >
+          0
+        </span>
+
       </button>
 
     </div>
@@ -111,155 +127,82 @@
   </nav>
 
 
-  <section class="hero">
-    <img
-      src="imagenes/banner.jpg"
-      alt="MILASHES INSUMOS"
-    >
-  </section>
+  <main class="products-section">
 
+    <div class="products-heading">
 
-  <section class="categories">
+      <div>
 
-    <div class="section-title">
+        <span class="section-label">
+          PROMOCIONES
+        </span>
 
-      <span>
-        ENCONTRÁ LO QUE NECESITÁS
-      </span>
+        <h2>
+          Ofertas especiales
+        </h2>
 
-      <h2>
-        Comprar por categoría
-      </h2>
-
-    </div>
-
-
-    <div class="category-grid">
-
-      <button
-        class="category-card"
-        type="button"
-        onclick="window.location.href='productos.html?categoria=Pestañas'"
-      >
-        <div>👁️</div>
-        <span>Pestañas</span>
-      </button>
-
-      <button
-        class="category-card"
-        type="button"
-        onclick="window.location.href='productos.html?categoria=Adhesivos'"
-      >
-        <div>💧</div>
-        <span>Adhesivos</span>
-      </button>
-
-      <button
-        class="category-card"
-        type="button"
-        onclick="window.location.href='productos.html?categoria=Pinzas'"
-      >
-        <div>✂️</div>
-        <span>Pinzas</span>
-      </button>
-
-      <button
-        class="category-card"
-        type="button"
-        onclick="window.location.href='productos.html?categoria=Accesorios'"
-      >
-        <div>✨</div>
-        <span>Accesorios</span>
-      </button>
-
-      <button
-        class="category-card"
-        type="button"
-        onclick="window.location.href='productos.html?categoria=Kits'"
-      >
-        <div>🎁</div>
-        <span>Kits</span>
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <section class="contact">
-
-    <div class="section-title">
-
-      <span>
-        CONOCÉ MILASHES
-      </span>
-
-      <h2>
-        Todo para profesionales
-      </h2>
-
-    </div>
-
-    <div class="contact-grid">
-
-      <div class="contact-card">
-        <div>🛍️</div>
-
-        <h3>
-          Productos
-        </h3>
-
-        <p>
-          Descubrí todos nuestros insumos profesionales.
-        </p>
-
-        <a href="productos.html">
-          Ver productos
-        </a>
-      </div>
-
-      <div class="contact-card">
-        <div>🔥</div>
-
-        <h3>
-          Ofertas
-        </h3>
-
-        <p>
-          Aprovechá nuestros productos en promoción.
-        </p>
-
-        <a href="ofertas.html">
-          Ver ofertas
-        </a>
-      </div>
-
-      <div class="contact-card">
-        <div>📲</div>
-
-        <h3>
-          Contacto
-        </h3>
-
-        <p>
-          Estamos para ayudarte con tu compra.
-        </p>
-
-        <a href="contacto.html">
-          Contactanos
-        </a>
       </div>
 
     </div>
 
-  </section>
+
+    <div class="shop-layout">
+
+      <section class="products-container">
+
+        <div class="results-info">
+
+          <span id="resultsCount">
+            Cargando ofertas...
+          </span>
+
+        </div>
+
+
+        <div
+          class="product-grid"
+          id="productGrid"
+        ></div>
+
+
+        <div
+          class="no-results"
+          id="noResults"
+        >
+
+          <div>
+            🔎
+          </div>
+
+          <h3>
+            No hay ofertas disponibles
+          </h3>
+
+          <p>
+            Próximamente tendremos nuevas promociones.
+          </p>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
 
 
   <footer>
 
     <div class="footer-logo">
-      <span>MILASHES</span>
-      <small>INSUMOS</small>
+
+      <span>
+        MILASHES
+      </span>
+
+      <small>
+        INSUMOS
+      </small>
+
     </div>
 
     <p>
@@ -314,7 +257,6 @@
       <button
         id="closeCart"
         type="button"
-        aria-label="Cerrar carrito"
       >
         ×
       </button>
@@ -362,7 +304,43 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="script.js"></script>
 
+  <script>
+
+    /*
+      OFERTAS
+
+      Después de cargar los productos,
+      mostramos únicamente aquellos
+      que tengan discount mayor a 0.
+    */
+
+    const ofertasOriginal =
+      window.setInterval(function () {
+
+        if (
+          typeof products !== "undefined" &&
+          products.length > 0
+        ) {
+
+          clearInterval(ofertasOriginal);
+
+          const ofertas =
+            products.filter(
+              product =>
+                Number(product.discount || 0) > 0
+            );
+
+          renderProducts(ofertas);
+
+        }
+
+      }, 100);
+
+  </script>
+
 </body>
+
 </html>

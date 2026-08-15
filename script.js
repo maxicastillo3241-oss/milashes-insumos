@@ -2171,12 +2171,57 @@ loadProducts();
 
 
 /* =====================================================
-   RECARGAR PRODUCTOS AUTOMÁTICAMENTE
+   CATEGORÍA DESDE URL
+===================================================== */
 
-   Cada 30 minutos consulta Supabase.
+function applyCategoryFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const category =
+    params.get("categoria");
+
+
+  if (!category)
+    return;
+
+
+  const radio =
+    document.querySelector(
+      `input[name="category"][value="${category}"]`
+    );
+
+
+  if (radio) {
+
+    radio.checked =
+      true;
+
+    applyFilters();
+
+  }
+
+}
+
+
+/* =====================================================
+   RECARGAR PRODUCTOS AUTOMÁTICAMENTE
 ===================================================== */
 
 setInterval(
   loadProducts,
   300000
+);
+
+
+/* =====================================================
+   APLICAR CATEGORÍA DESDE LA URL
+===================================================== */
+
+setTimeout(
+  applyCategoryFromURL,
+  500
 );
