@@ -2225,3 +2225,13 @@ setTimeout(
   applyCategoryFromURL,
   500
 );
+
+window.addEventListener("scroll", function () {
+
+  if (window.scrollY > 50) {
+    document.body.classList.add("header-scrolled");
+  } else {
+    document.body.classList.remove("header-scrolled");
+  }
+
+});
