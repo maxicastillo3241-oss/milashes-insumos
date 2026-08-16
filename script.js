@@ -34,6 +34,66 @@ const mobileMenu = document.getElementById("mobileMenu");
 const nav = document.getElementById("nav");
 const whatsappContact = document.getElementById("whatsappContact");
 
+/* =====================================================
+   CONTROLES DE CATÁLOGO EN MÓVIL
+===================================================== */
+
+function setupMobileCatalogControls() {
+  const sortButton = document.getElementById("mobileSortButton");
+  const filterButton = document.getElementById("mobileFilterButton");
+  const sortSelect = document.getElementById("sortProducts");
+  const existingFilters = document.getElementById("filters");
+  const mobilePanel = document.getElementById("mobileFilterPanel");
+  const sideSort = document.getElementById("sortProductsSide");
+
+  if (sideSort && sortSelect) {
+    sideSort.value = sortSelect.value;
+    sideSort.addEventListener("change", () => {
+      sortSelect.value = sideSort.value;
+      applyFilters();
+    });
+  }
+  const closeMobileFilters = document.getElementById("closeMobileFilters");
+
+  if (sortButton && sortSelect) {
+    sortButton.addEventListener("click", () => {
+      sortSelect.focus();
+      if (typeof sortSelect.showPicker === "function") {
+        try { sortSelect.showPicker(); } catch (e) {}
+      }
+    });
+  }
+
+  if (filterButton) {
+    filterButton.addEventListener("click", () => {
+      if (mobilePanel) {
+        mobilePanel.classList.add("active");
+        document.body.classList.add("mobile-filter-open");
+      } else if (existingFilters) {
+        existingFilters.classList.add("mobile-open");
+        document.body.classList.add("mobile-filter-open");
+      }
+    });
+  }
+
+  const closePanel = () => {
+    if (mobilePanel) mobilePanel.classList.remove("active");
+    if (existingFilters) existingFilters.classList.remove("mobile-open");
+    document.body.classList.remove("mobile-filter-open");
+  };
+
+  if (closeMobileFilters) closeMobileFilters.addEventListener("click", closePanel);
+
+  document.addEventListener("click", event => {
+    if (event.target.matches("#mobileFilterPanel .filter-group input")) {
+      setTimeout(closePanel, 150);
+    }
+  });
+}
+
+setupMobileCatalogControls();
+
+
 let products = [];
 let cartData = JSON.parse(localStorage.getItem("milashes_cart") || "[]");
 const WHATSAPP_NUMBER = "5491156348200";
@@ -215,30 +275,52 @@ function renderFeaturedProducts() {
   });
 
   if (isMobile) {
-    let touchStartX = 0;
-    let touchStartY = 0;
-
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
     const windowEl = featuredGrid.querySelector(".featured-window");
+    const stepPercent = 100 / displayProducts.length;
+    const baseOffset = -(featuredPage * stepPercent);
+
+    const moveTrack = (x) => {
+      const delta = x - startX;
+      const deltaPercent = (delta / windowEl.clientWidth) * 100;
+      track.style.transition = "none";
+      track.style.transform = `translateX(${baseOffset + deltaPercent}%)`;
+    };
 
     windowEl.addEventListener("touchstart", event => {
-      const touch = event.changedTouches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
+      const touch = event.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      currentX = startX;
+      dragging = true;
+      track.style.transition = "none";
     }, { passive: true });
 
-    windowEl.addEventListener("touchend", event => {
-      const touch = event.changedTouches[0];
-      const dx = touch.clientX - touchStartX;
-      const dy = touch.clientY - touchStartY;
-
-      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
-
-      if (dx < 0) {
-        featuredPage = (featuredPage + 1) % total;
-      } else {
-        featuredPage = (featuredPage - 1 + total) % total;
+    windowEl.addEventListener("touchmove", event => {
+      if (!dragging) return;
+      const touch = event.touches[0];
+      currentX = touch.clientX;
+      const deltaX = currentX - startX;
+      const deltaY = touch.clientY - startY;
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        event.preventDefault();
+        moveTrack(currentX);
       }
+    }, { passive: false });
 
+    windowEl.addEventListener("touchend", () => {
+      if (!dragging) return;
+      dragging = false;
+      const delta = currentX - startX;
+      const threshold = Math.min(80, windowEl.clientWidth * 0.18);
+      if (Math.abs(delta) > threshold) {
+        featuredPage = delta < 0
+          ? (featuredPage + 1) % total
+          : (featuredPage - 1 + total) % total;
+      }
       renderFeaturedProducts();
     }, { passive: true });
   }

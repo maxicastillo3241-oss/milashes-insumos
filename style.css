@@ -2205,3 +2205,194 @@ body.header-scrolled .nav a::after {
     padding: 10px !important;
   }
 }
+
+/* =====================================================
+   CATÁLOGO: HEADER NORMAL AL HACER SCROLL
+===================================================== */
+
+.catalog-page .header {
+  position: relative !important;
+  top: auto !important;
+}
+
+/* =====================================================
+   CONTROLES MÓVILES DE PRODUCTOS / OFERTAS
+===================================================== */
+
+.mobile-catalog-tools,
+.mobile-filter-panel {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .mobile-catalog-tools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: -4px 0 20px;
+  }
+
+  .mobile-catalog-tools button {
+    height: 42px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .7px;
+    cursor: pointer;
+  }
+
+  .mobile-catalog-tools button:active {
+    background: #f7eef1;
+  }
+
+  .products-heading #sortProducts {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+
+  .filters {
+    display: none !important;
+  }
+
+  .filters.mobile-open {
+    display: block !important;
+    position: fixed;
+    z-index: 1000;
+    inset: auto 12px 12px 12px;
+    width: auto !important;
+    max-height: 78vh;
+    overflow-y: auto;
+    padding: 18px;
+    box-shadow: 0 15px 45px rgba(0,0,0,.22);
+  }
+
+  .mobile-filter-panel {
+    position: fixed;
+    z-index: 1000;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-height: 78vh;
+    overflow-y: auto;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid var(--border);
+    box-shadow: 0 15px 45px rgba(0,0,0,.22);
+    transform: translateY(120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .25s ease, opacity .25s ease;
+  }
+
+  .mobile-filter-panel.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-filter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-filter-head button {
+    border: 0;
+    background: transparent;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  body.mobile-filter-open::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.35);
+  }
+
+  .offers-page .products-heading {
+    position: relative;
+  }
+
+  .offers-page .products-heading #sortProducts {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+
+  .offers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .offers-grid,
+  .products-section .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Suavidad del carrusel táctil */
+@media (max-width: 750px) {
+  .featured-window {
+    overflow: hidden;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .featured-track {
+    will-change: transform;
+  }
+}
+
+/* Ordenar dentro del lateral en Productos (desktop) */
+@media (min-width: 701px) {
+  .products-page .products-heading > #sortProducts {
+    display: none !important;
+  }
+
+  .catalog-sort-side {
+    display: block;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .catalog-sort-side label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .catalog-sort-side select {
+    width: 100%;
+    padding: 11px 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+    outline: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  .catalog-sort-side {
+    display: none !important;
+  }
+}

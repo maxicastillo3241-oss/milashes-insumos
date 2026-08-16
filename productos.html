@@ -25,7 +25,7 @@
 
 </head>
 
-<body>
+<body class="catalog-page products-page">
 
 
   <div class="topbar">
@@ -175,6 +175,14 @@
     </div>
 
 
+    <div class="mobile-catalog-tools">
+
+      <button type="button" id="mobileSortButton">ORDENAR</button>
+      <button type="button" id="mobileFilterButton">FILTRAR</button>
+
+    </div>
+
+
     <div class="shop-layout">
 
 
@@ -196,6 +204,17 @@
             Limpiar
           </button>
 
+        </div>
+
+
+        <div class="catalog-sort-side">
+          <label for="sortProductsSide">Ordenar</label>
+          <select id="sortProductsSide">
+            <option value="default">Ordenar por</option>
+            <option value="price-low">Precio: menor a mayor</option>
+            <option value="price-high">Precio: mayor a menor</option>
+            <option value="name">Nombre A-Z</option>
+          </select>
         </div>
 
 

@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="offers-page">
+<body class="offers-page catalog-page">
 
 
   <div class="topbar">
@@ -143,6 +143,45 @@
 
       </div>
 
+      <select id="sortProducts">
+        <option value="default">Ordenar por</option>
+        <option value="price-low">Precio: menor a mayor</option>
+        <option value="price-high">Precio: mayor a menor</option>
+        <option value="name">Nombre A-Z</option>
+      </select>
+
+    </div>
+
+
+    <div class="mobile-catalog-tools">
+      <button type="button" id="mobileSortButton">ORDENAR</button>
+      <button type="button" id="mobileFilterButton">FILTRAR</button>
+    </div>
+
+
+    <div class="mobile-filter-panel" id="mobileFilterPanel">
+      <div class="mobile-filter-head">
+        <strong>Filtrar productos</strong>
+        <button type="button" id="closeMobileFilters">×</button>
+      </div>
+
+      <div class="filter-group">
+        <h4>Categoría</h4>
+        <label><input type="radio" name="category" value="Todos" checked> Todos</label>
+        <label><input type="radio" name="category" value="Pestañas"> Pestañas</label>
+        <label><input type="radio" name="category" value="Adhesivos"> Adhesivos</label>
+        <label><input type="radio" name="category" value="Pinzas"> Pinzas</label>
+        <label><input type="radio" name="category" value="Accesorios"> Accesorios</label>
+        <label><input type="radio" name="category" value="Kits"> Kits</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Precio</h4>
+        <label><input type="radio" name="price" value="all" checked> Todos</label>
+        <label><input type="radio" name="price" value="under10000"> Hasta $10.000</label>
+        <label><input type="radio" name="price" value="10000-20000"> $10.000 - $20.000</label>
+        <label><input type="radio" name="price" value="over20000"> Más de $20.000</label>
+      </div>
     </div>
 
 
